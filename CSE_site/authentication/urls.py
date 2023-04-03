@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from django.contrib.auth import views as auth_views
 
 from . import views
@@ -17,4 +17,7 @@ urlpatterns = [
     path('reset_password/<uidb64>/<token>', views.reset_password, name='auth_reset_password'),
     path('reset_password/done/', auth_views.PasswordResetDoneView.as_view(template_name="reset_password/reset_password_done.html"), name="auth_reset_password_done"),
     path("reset/done/",auth_views.PasswordResetCompleteView.as_view(template_name="reset_password/reset_password_complete.html"), name="auth_reset_password_complete",),
+    path("proctor/", views.proctor_management, name="proctor_management"),
+    path('student', include('student_dashboard_proctor.urls')),
+    path('faculty', include('faculty_dashboard_proctor.urls'))
 ]

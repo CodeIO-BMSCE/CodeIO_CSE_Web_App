@@ -12,6 +12,8 @@ from django.template.loader import render_to_string
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.hashers import make_password
+from student_dashboard_proctor.models import Student as student
+from faculty_dashboard_proctor.models import Faculty as facs
 
 from .models import User, Student, Faculty
 from .decorators import already_logged_in
@@ -93,6 +95,11 @@ def register_student(req):
         stud.usn = usn
         stud.groups.add(group)
         stud.save()
+        details=student()
+        details.name=name
+        details.USN=usn
+        details.email=email
+        details.save()
         messages.add_message(req, messages.SUCCESS, 'We sent you an email to verify your account')
 
         send_activation_email(stud, req)
@@ -133,12 +140,16 @@ def register_faculty(req):
         fac.name = name
         fac.groups.add(group)
         fac.save()
+        details=facs()
+        details.name=name
+        details.email=email
+        details.save()
         messages.add_message(req, messages.SUCCESS, 'We sent you an email to verify your account')
 
         send_activation_email(fac, req)
         return redirect(reverse('auth_login_faculty'))
 
-    return render(req, "login_faculty.html", context)
+    return render(req, "register_faculty.html", context)
 
 @already_logged_in(url="landing_page")
 def login_student(req):
@@ -263,3 +274,14 @@ def verify_email(req, uidb64, token):
         return redirect(reverse('auth_login_student'))
 
     return HttpResponse("Something wrong with your Link! or the email is already verified")
+
+def proctor_management(request):
+    if(request.user.groups.filter(name="Student").exists()):
+        students=student.objects.get(email=request.user.email)
+        if(students.proctor_id):
+            return redirect( 'student:dashboard', pk=students.USN)
+        else:
+            #edit the message
+            return redirect('student:no_proctor')
+    else:
+        return redirect('faculty:dashboard')

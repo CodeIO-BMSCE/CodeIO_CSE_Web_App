@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'authentication',
     'online_cie_allocator',
+    'student_dashboard_proctor',
+    'faculty_dashboard_proctor'
 ]
 
 MIDDLEWARE = [
@@ -137,14 +139,12 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'authentication.User'
 
-from .host_email_data import *
-
 # EMAIL SETTINGS
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = EMAIL_HOST_USER
-EMAIL_HOST_PASSWORD = EMAIL_HOST_PASSWORD
-DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+EMAIL_HOST_USER = "binarybeast001@gmail.com"
+EMAIL_HOST_PASSWORD = "mxdarizlkyxypljl"
+DEFAULT_FROM_EMAIL = "binarybeast001@gmail.com"
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
