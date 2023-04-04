@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+<body>
+
+<canvas id="myChart" style="width:200%"></canvas>
+
+<script>
+var xValues = [ "Total Number of Classes", "Number of Classes Attended"];
+var yValues = [20, 14];
+var barColors = [
+  "#00aba9",
+  "#2b5797"
+];
+
+new Chart("myChart", {
+  type: "pie",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+ 
+});
+</script>
+
+</body>
+</html>
