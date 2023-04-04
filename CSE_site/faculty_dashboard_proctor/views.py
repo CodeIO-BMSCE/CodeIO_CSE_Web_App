@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from .models import Faculty
-from student_dashboard_proctor.models import Student, StudentDetail, Sem, Fastrack
+from student_dashboard_proctor.models import Student, StudentDetail, Sem, Fastrack, courseRequest
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.conf import settings
 import openpyxl
+import pandas as pd
 
 # Create your views here.
 @login_required
@@ -82,31 +83,68 @@ def addStudents(request):
     if request.method == "POST":
         excel_file = request.FILES['excel']
         print(excel_file)
-        wb = openpyxl.load_workbook(excel_file)
-        worksheet = wb["Sheet1"]
-        excel_data = list()
-        data = []
-        row_data = list()
-        for cols in worksheet.iter_cols():
-            for cell in cols:
-                if str(cell.value) == 'USN':
-                    data = cols
-                    break
-                else:
-                    continue
-            if data != '':
-                break
-        for cell in data:
-            row_data.append(str(cell.value))
-        excel_data.append(row_data)
-        print(len(row_data))
-        faculty = Faculty.objects.get(email=request.user.email)
-        for usn in row_data:
-            if usn == 'USN':
-                continue
-            else:
-                student = Student.objects.get(USN=usn)
-                student.proctor_id = faculty
-                student.save()
+        wb = pd.read_excel(excel_file)
+        usn = []
+        sem = []
+        total = len(wb['USN'])
+        for i in range(total):
+            usn.append(wb['USN'][i])
+            sem.append(wb['Sem'][i])
+        faculty = Faculty.objects.get(email=request.user.email)   
+        for usns, sems in zip(usn, sem):
+            student = Student.objects.get(USN=usns)
+            student.proctor_id = faculty
+            student.current_sem = sems
+            student.save()
         return redirect('faculty:dashboard')
     return render(request, 'faculty_dashboard_proctor/add_students.html')
+
+def sendCourse(request):
+    if request.method == "POST":
+        faculty = Faculty.objects.get(email=request.user.email)
+        students = Student.objects.filter(proctor_id=faculty , current_sem=int(request.POST['sems'])-1)
+        emails= []
+        for stud in students:
+            emails.append(stud.email)
+            req = courseRequest()
+            req.faculty = faculty
+            req.sem = int(request.POST['sems'])
+            req.no_subjects = request.POST['subjects']
+            req.student_usn = stud.USN
+            req.save()
+            stud.current_sem = int(request.POST['sems'])
+            stud.save()
+            courses = Sem.objects.filter(USN=stud.USN, sem=stud.current_sem-1, is_active=True)
+            for course in courses:
+                course.is_active = False
+                course.save()
+        message = "Fill the course registration form as soon as possible"
+        name = faculty.name
+        template = render_to_string('faculty_dashboard_proctor/send_fill.html', {'message': message, 'name': name})
+        email = EmailMessage(
+                message,
+                template,
+                settings.EMAIL_HOST_USER,
+                emails,
+            )
+        email.send()
+        return redirect('faculty:dashboard')
+    return render(request, 'faculty_dashboard_proctor/course_register.html')
+
+def sendAlertMail(request, emails):
+    student=Student.objects.get(email=emails)
+    message = 'Looks like you have not filled the course registration. Please fill ASAP'
+    faculty = Faculty.objects.get(email=request.user.email)
+    name = faculty.name
+    template = render_to_string('faculty_dashboard_proctor/send_fill.html', {'message': message, 'name': name})
+    email = EmailMessage(
+        
+                message,
+                template,
+                settings.EMAIL_HOST_USER,
+                [emails],
+                # fail_silently=False,
+                
+            )
+    email.send()
+    return redirect('faculty:dashboard')

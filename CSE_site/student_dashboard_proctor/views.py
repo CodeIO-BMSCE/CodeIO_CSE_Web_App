@@ -4,6 +4,7 @@ from django.contrib import messages
 from . import models
 from student_dashboard_proctor.models import Student, courseRequest, Sem, StudentDetail, Fastrack
 from .forms import StudentDetailsForm
+from django.db.models import Count
 
 # Create your views here.
 @login_required
@@ -18,22 +19,23 @@ def dashboard(request, pk):
     if(pk!=student.USN):
         return HttpResponse("Not allowd")
     courses = models.Sem.objects.filter(USN=pk, sem=sem)
+    coursess=Sem.objects.filter(USN=pk, sem=sem, is_approved=False)
     fastrack = models.Fastrack.objects.filter(USN=pk, is_active=True)
     length = fastrack.count()
-    context = {'courses': courses, 'req': number.count(), 'sem': sem, 's_info': s_info, 'student': student, 'usn': student.USN, 'fast_count': length, 'fasttrack': fastrack}
+    context = {'courses': courses, 'req': number.count(), 'sem': sem, 's_info': s_info, 'student': student, 'usn': student.USN, 'fast_count': length, 'fasttrack': fastrack, 'unapproved': len(coursess)}
     return render(request, 'student_dashboard_proctor/dashboard.html', context)
 
 
 @login_required
 def dashboard_marks(request, pk):
     student=Student.objects.get(email=request.user.email)
-    number=courseRequest.objects.filter(student_usn=student.USN)
+    number=courseRequest.objects.filter(student_usn=student.USN, is_active=False)
     sem=student.current_sem
     if(pk!=student.USN):
         return HttpResponse("Not allowd")
-    courses = models.Sem.objects.filter(USN=pk, sem=sem)
+    courses = models.Sem.objects.filter(USN=pk, is_active=False).values('sem').order_by()
     print(courses)
-    context = {'courses': courses, 'req': number.count(), 'sem': sem,}
+    context = {'courses': courses, 'req': number.count(),}
     return render(request, 'student_dashboard_proctor/course_marks.html', context)
 
 @login_required
