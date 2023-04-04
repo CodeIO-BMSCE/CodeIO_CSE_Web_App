@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>CSE AMS</title>
+        <!-- Font Awesome -->
+       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"rel="stylesheet"/>
+        <!-- Google Fonts -->
+       <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+        <!-- MDB -->
+       <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.css" rel="stylesheet"/>
+
+      <!-- MDB -->
+       <script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.js"></script>
+       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+	</head>
+  <style>
+     @import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
+    body{
+      font-family: 'Urbanist', sans-serif !important;
+    }
+
+    /* The container */
+    .checkbox {
+      display: block;
+      position: relative;
+      padding-left: 35px;
+      margin-bottom: 12px;
+      cursor: pointer;
+      font-size: 22px;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+    
+    /* Hide the browser's default checkbox */
+    .checkbox input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+    
+    /* Create a custom checkbox */
+    .checkmark {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 25px;
+      width: 25px;
+      background-color: grey;
+    }
+    
+    /* On mouse-over, add a grey background color */
+    .checkbox:hover input ~ .checkmark {
+      background-color: #ccc;
+    }
+    
+    /* When the checkbox is checked, add a blue background */
+    .checkbox input:checked ~ .checkmark {
+      background-color: green;
+    }
+    
+    /* Create the checkmark/indicator (hidden when not checked) */
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+    }
+    
+    /* Show the checkmark when checked */
+    .checkbox input:checked ~ .checkmark:after {
+      display: block;
+    }
+    
+    /* Style the checkmark/indicator */
+    .checkbox .checkmark:after {
+      left: 9px;
+      top: 5px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 3px 3px 0;
+      -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+      transform: rotate(45deg);
+    }
+    </style>
+	<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand me-2" href="">
+          <i class="fa-solid fa-bars"></i>
+        </a>
+    
+        <!-- <button
+          class="navbar-toggler"
+          type="button"
+          data-mdb-toggle="collapse"
+          data-mdb-target="#navbarButtonsExample"
+          aria-controls="navbarButtonsExample"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fas fa-bars"></i>
+        </button> -->
+
+        <div class="collapse navbar-collapse" id="navbarButtonsExample">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              {% if user.is_authenticated %}
+              <a class="nav-link" href="#">Hello , {{user.name}}</a>
+              {% else %}
+              <a class="nav-link" href="#">Hello</a>
+              {% endif %}
+            </li>
+          </ul>
+          
+          <div class="d-flex align-items-center">
+            <button type="button" class="btn btn-primary btn-floating btn-md me-3" data-mdb-toggle="modal" data-mdb-target="#myModal">
+              <i class="fa-solid fa-plus pe-none"></i>
+            </button>
+            <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Student Data</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <label for="classfile" class="col-form-label">Upload</label>
+                    <input type="file" class="form-control" id="classfile" name="classfile"/>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                      Close
+                    </button>
+                    <input type="submit" name="submit" class="btn btn-primary">
+                  </div>
+                </form>
+              </div> 
+            </div>
+          </div>
+      </div>
+          <a href="{% url 'logout' %}">
+            <button type="button" class="btn btn-primary me-3">
+                LOGOUT
+            </button>
+          </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  <form action="{% url 'facultyCourses' %}?section={{section}}&courseTitle={{courseTitle}}" method="POST">
+    {% csrf_token %}
+    <section class="vh-100 mt-30" style="background-color: #eee;">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-lg-12 col-xl-11">
+            <div class="card text-black" style="border-radius: 25px;">
+              <div class="card-body p-md-5">
+                <div class="row justify-content-center">
+                {% if count == 0 %}
+                  <div style="height: 45px;font-size: 20px;" class="badge badge-warning">No student data found for the section</div>
+                {% else %}
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Sl no</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">USN</th>
+                    <th scope="col">Attendance</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for student in students %}
+                  <tr>
+                    <th scope="row">{{student.id}}</th>
+                    <td>{{student.name}}</td>
+                    <td>{{student.usn}}</td>
+                    <td>
+                    <label class="checkbox">
+                        <input type="checkbox" checked name="attendance" value="{{student.usn}}">
+                        <span class="checkmark" aria-checked="checked"></span>
+                    </label>
+                    </td>
+
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              <button type="submit" class="btn btn-success mt-3" style="width:10%;">Submit</button>
+              {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </form>
+  {% include 'Attendence_Management/footer.html' %}  
+	</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>CSE AMS</title>
+		  <!-- Font Awesome -->
+          <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"rel="stylesheet"/>
+          <!-- Google Fonts -->
+         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+          <!-- MDB -->
+         <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.css" rel="stylesheet"/>
+  
+        <!-- MDB -->
+         <script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.js"></script>
+          
+	</head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
+    body{
+      font-family: 'Urbanist', sans-serif !important;
+    }
+  </style>
+	<body style="background: #f5f8fa;font-family: 'Roboto', sans-serif;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand me-2" href="">
+          <i class="fa-solid fa-bars"></i>
+        </a>
+    
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-mdb-toggle="collapse"
+          data-mdb-target="#navbarButtonsExample"
+          aria-controls="navbarButtonsExample"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <i class="fas fa-bars"></i>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarButtonsExample">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              {% if user.is_authenticated %}
+              <a class="nav-link" href="#">Hello , {{user.name}}</a>
+              {% else %}
+              <a class="nav-link" href="#">Hello</a>
+              {% endif %}
+            </li>
+          </ul>
+          {% for message in messages %}
+                      <div style="height: 35px;font-size: 20px;" class="badge badge-success mb-2">{{message}}</div>
+          {% endfor %}
+            <a href="{% url 'logout' %}">
+              <button type="button" class="btn btn-primary me-3">
+                LOGOUT
+              </button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    
+    <section class="vh-100" style="background-color: #eee;">
+        <div class="container h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-lg-12 col-xl-11">
+              <div class="card text-black" style="border-radius: 25px;">
+                <div class="card-body p-md-5">
+                  <div class="row justify-content-center">
+                    <p class="text-left h4 fw-bold mb-4 mx-1 mx-md-2 mt-2">Dashboard</p>
+                  <table class="table align-middle mb-0 bg-white">
+                   <thead class="bg-light">
+                    <tr>
+                     <th>Course Title</th>
+                     <th>Faculty Handle</th>
+                     </tr>
+                    </thead>
+                    <tbody>
+                    {% for course , faculty in flist %}
+                    <tr>
+                    <td>
+                      <div class="d-flex align-items-center">
+                      <div class="ms-3">
+                      <p class="fw-bold mb-1"><a class="text-black" href="{% url "studentcourse" %}?courseTitle={{course}}">{{course}}</a></p>
+                      </div>
+                      </div>
+                   </td>
+                   <td>
+                     <p class="fw-normal mb-1">{{faculty}}</p>
+                    </td>
+                   </tr>
+                   {% endfor %}
+                  </tbody>
+                  </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+     {% include 'Attendence_Management/footer.html' %}  
+	</body>
+</html>

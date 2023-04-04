@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>CSE AMS</title>
+		  <!-- Font Awesome -->
+          <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"rel="stylesheet"/>
+          <!-- Google Fonts -->
+         <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+          <!-- MDB -->
+         <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.css" rel="stylesheet"/>
+  
+        <!-- MDB -->
+         <script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.js"></script>
+          
+	</head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
+    body{
+      font-family: 'Urbanist', sans-serif !important;
+    }
+  </style>
+	<body style="background: #f5f8fa;font-family: 'Roboto', sans-serif;">
+    {% include 'navbar.html' %}
+    <section class="vh-100" style="background-color: #eee;">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-lg-12 col-xl-11">
+            <div class="card text-black" style="border-radius: 25px;">
+              <div class="card-body p-md-5">
+                <div class="row justify-content-center">
+                  <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+                      {% for message in messages %}
+                      <div style="height: 35px;font-size: 20px;" class="badge badge-success mb-2">{{message}}</div>
+                      {% endfor %}
+                      <h3 class="tx-color-01 mg-b-5">Welcome to BMSCE</h3>
+                      <p class="tx-color-03 tx-14 mg-b-40">Login with college mailID to keep updated with your attendence status</p>
+                      <a href="{% url "login" %}" class="btn btn-outline-primary btn-block">Student Sign In</a>            
+                      <a href="{% url "login" %}" class="btn btn-outline-danger btn-block">Faculty Sign In</a> 
+                      <a href="{% url "login" %}" class="btn btn-outline-dark btn-block">Co-ordinator Sign In</a> 
+                      <a href="{% url "login" %}" class="btn btn-outline-success btn-block">HOD Sign In</a> 
+                  </div>
+                  <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+    
+                    <img src="https://thumbs.dreamstime.com/b/vector-art-word-attendance-fastened-to-vector-art-word-attendance-list-fastened-to-computer-monitor-color-cartoon-215523829.jpg"
+                      class="img-fluid" alt="image">
+    
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    {% include 'footer.html' %}  
+	</body>
+</html>

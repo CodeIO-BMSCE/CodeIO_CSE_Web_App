@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>CSE AMS</title>
+        <!-- Font Awesome -->
+       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"rel="stylesheet"/>
+        <!-- Google Fonts -->
+       <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+        <!-- MDB -->
+       <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.css" rel="stylesheet"/>
+
+      <!-- MDB -->
+       <script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.js"></script>
+		
+	</head>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
+    body{
+      font-family: 'Urbanist', sans-serif !important;
+    }
+  </style>
+	<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <div class="dropdown">
+          <button
+            class="btn btn-light dropdown-toggle"
+            type="button"
+            id="dropdownMenuButton"
+            data-mdb-toggle="dropdown"
+            aria-expanded="false"
+          >
+          <i class="fa-solid fa-bars"></i>
+          </button>
+          {% comment %} <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="{% url 'facultyAttendance' %}">Academic year 2020-20</a></li>
+            <li><a class="dropdown-item" href="{% url 'facultyAttendance' %}">Academic year 2020-21</a></li>
+            <li><a class="dropdown-item" href="{% url 'facultyAttendance' %}">Academic year 2020-22</a></li>
+          </ul> {% endcomment %}
+        </div>
+    
+        <div class="collapse navbar-collapse" id="navbarButtonsExample">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              {% if user.is_authenticated %}
+              <a class="nav-link" href="#">Hello , {{user.name}}</a>
+              {% else %}
+              <a class="nav-link" href="#">Hello</a>
+              {% endif %}
+            </li>
+          </ul>
+          
+          {% for message in messages %}
+          <div style="height: 35px;font-size: 20px;" class="badge badge-success mb-2">{{message}}</div>
+          {% endfor %}
+    
+          <div class="d-flex align-items-center">
+            <button type="button" class="btn btn-primary btn-floating btn-md me-3" data-mdb-toggle="modal" data-mdb-target="#myModal">
+              <i class="fa-solid fa-plus pe-none"></i>
+            </button>
+            <div class="modal fade" id="myModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Add Course</h5>
+                <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <form method="POST" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                    <label for="course-title" class="col-form-label">Course Title</label>
+                    <input type="text" class="form-control" id="course-title" name="courseTitle" placeholder="Software Engineering"/>
+                  </div>
+                  <div class="mb-3">
+                    <label for="course-code" class="col-form-label">Course Code</label>
+                    <input type="text" class="form-control" id="course-code" name="courseCode"placeholder="20CS5PCCON"/>
+                  </div>
+                  <div class="mb-3">
+                    <label for="semester" class="col-form-label">Semester</label>
+                    <input type="text" class="form-control" id="semester" name="semester" placeholder="5"/>
+                  </div>
+                  <div class="mb-3">
+                    <label for="section" class="col-form-label">Section</label>
+                    <input type="text" class="form-control" id="section" name="section" placeholder="C"/>
+                  </div>
+                  <div class="mb-3">
+                    <label for="classfile" class="col-form-label">Upload</label>
+                    <input type="file" class="form-control" id="classfile" name="classfile" />
+                    <label class="col-form-label">Use the format with columns as id , name , usn , email , section(Example : 3A)
+                    </label>
+                  </div> 
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                      Close
+                    </button>
+                    <input type="submit" name="submit" class="btn btn-primary">
+                  </div>
+                </form>
+              </div>
+              
+            </div>
+          </div>
+      </div>
+          <a href="{% url 'logout' %}">
+          <button type="button" class="btn btn-primary me-3">
+            LOGOUT
+          </button>
+          </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="container">
+        <div class="row">
+          {% for dat in mydata %}
+            <div class="col-sm-4 mt-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{dat.courseTitle}}</h5>
+                  <p class="card-text">Course Code : {{dat.courseCode}}</p>
+                  <p class="card-text">Semester : {{dat.semester}}</p>
+                  <p class="card-text">Section : {{dat.section}}</p>
+                  <a href="{% url 'facultyAttendance' %}?section={{dat.semester}}{{dat.section}}&courseTitle={{dat.courseTitle}}" class="btn btn-primary">Mark Attendance</a>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+    </div>
+    {% include 'Attendence_Management/footer.html' %}  
+	</body>
+</html>
+
