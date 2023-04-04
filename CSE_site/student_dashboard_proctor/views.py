@@ -28,14 +28,16 @@ def dashboard(request, pk):
 
 @login_required
 def dashboard_marks(request, pk):
-    student=Student.objects.get(email=request.user.email)
-    number=courseRequest.objects.filter(student_usn=student.USN, is_active=False)
+    student=Student.objects.get(USN=pk)
+    number=courseRequest.objects.filter(student_usn=student.USN)
     sem=student.current_sem
     if(pk!=student.USN):
         return HttpResponse("Not allowd")
-    courses = models.Sem.objects.filter(USN=pk, is_active=False).values('sem').order_by()
-    print(courses)
-    context = {'courses': courses, 'req': number.count(),}
+    courses = models.Sem.objects.filter(USN=pk)
+    sem = set()
+    for co in courses:
+        sem.add(co.sem)
+    context = {'courses': courses, 'req': number.count(), 'sems':sem}
     return render(request, 'student_dashboard_proctor/course_marks.html', context)
 
 @login_required
@@ -52,7 +54,7 @@ def registerCourses(request):
     no=[]
     if request.method=="POST":
         while o>0:
-            ccode=request.POST['code%s' %(o)]
+            ccode="".join(request.POST['code%s' %(o)].rstrip())
             cname=request.POST['name%s' %(o)]
             credit=request.POST['credits%s' %(o)]
             registration=request.POST['reg%s' %(o)]

@@ -87,7 +87,7 @@ class Sem(models.Model):
     attendance=models.FloatField(blank=True, null=True)
     CIE=models.FloatField(blank=True, null=True)
     SEE=models.FloatField(max_length=1, blank=True, null=True)
-    GradePoints=models.FloatField(blank=True, null=True)
+    GradePoints=models.CharField(max_length=1, blank=True, null=True)
     facultyHandling=models.ForeignKey(Faculty, null=True, blank=True, on_delete=models.DO_NOTHING)
     is_approved=models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

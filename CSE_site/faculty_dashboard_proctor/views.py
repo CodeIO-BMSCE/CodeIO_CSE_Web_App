@@ -38,6 +38,10 @@ def studentDetails(request, pk):
         sendFillMail(request, message, 'Sudeep' ,student.email)
         return redirect('faculty:dashboard')
     courses = Sem.objects.filter(sem=student.current_sem, USN=pk)
+    not_ap = False
+    for co in courses:
+        if not co.is_approved:
+            not_ap = True
     if courses.exists():
         cour = True
         marks = courses[0].CIE == None
@@ -46,7 +50,7 @@ def studentDetails(request, pk):
         marks = False
     fastrack = Fastrack.objects.filter(USN=pk, is_active=True)
     length = fastrack.count()
-    context = {'s_info': s_info, 'courses': courses, 'fasttrack': fastrack, 'fast_count': length, 'email': student.email, 'usn': student.USN, 'marks': marks, 'cour': cour}
+    context = {'s_info': s_info,'not_ap': not_ap, 'courses': courses, 'fasttrack': fastrack, 'fast_count': length, 'email': student.email, 'usn': student.USN, 'marks': marks, 'cour': cour, 'sem': student.current_sem}
     return render(request, 'faculty_dashboard_proctor/student_details.html', context)
 
 def approve(request, pk):
@@ -56,9 +60,16 @@ def approve(request, pk):
     return redirect('faculty:student-details', pk=pk)
 
 def courseApprove(request, pk, course_id):
-    course = Sem.objects.get(USN=pk, courseCode=course_id)
-    course.is_approved = True
-    course.save()
+    print(type(course_id))
+    if int(course_id) == 0:
+        courses = Sem.objects.filter(USN=pk, is_active=True)
+        for course in courses:
+            course.is_approved = True
+            course.save()
+    else:
+        course = Sem.objects.get(USN=pk, courseCode=course_id)
+        course.is_approved = True
+        course.save()
     return redirect('faculty:student-details', pk=pk)
 
 def courseReject(request, emails):
@@ -148,3 +159,38 @@ def sendAlertMail(request, emails):
             )
     email.send()
     return redirect('faculty:dashboard')
+
+def addMarks(request):
+    if request.method == "POST":
+        excel_file = request.FILES['excel']
+        print(excel_file)
+        wb = pd.read_excel(excel_file)
+        i=0
+        usns = []
+        for usn in wb['USN']:
+            if i==0:
+                i+=1
+                continue
+            i+=1
+            usns.append(usn)
+        
+        for i in range(0, len(usns)):
+            for cols in wb.columns:
+                if cols == 'USN':
+                    continue
+                if not('Unnamed' in cols):
+                    curr_col = "".join(cols.rstrip())
+                print(curr_col)
+                if Sem.objects.filter(USN=usns[i], courseCode=str(curr_col)).exists():
+                    sem = Sem.objects.get(USN=usns[i], courseCode=str(curr_col))
+                    if wb[cols][0] == 'CIE':
+                        sem.CIE = wb[cols][i+1]
+                    if wb[cols][0] == 'SEE':
+                        sem.SEE = wb[cols][i+1]
+                    if wb[cols][0] == 'Grade':
+                        sem.GradePoints = wb[cols][i+1]
+                    if wb[cols][0] == 'Attendance':
+                        sem.attendance = wb[cols][i+1]
+                    sem.save()
+        return redirect('faculty:dashboard')
+    return render(request, 'faculty_dashboard_proctor/add_marks.html')
