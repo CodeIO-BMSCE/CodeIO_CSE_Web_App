@@ -33,7 +33,7 @@ class Student(User):
         verbose_name = "Student"
         verbose_name_plural = "Students"
 
-class Faculty(User):
+class Faculty(User): 
     designation = models.CharField(max_length=255)
 
     def __str__(self):

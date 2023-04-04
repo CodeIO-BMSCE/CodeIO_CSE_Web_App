@@ -14,6 +14,7 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.hashers import make_password
 from student_dashboard_proctor.models import Student as student
 from faculty_dashboard_proctor.models import Faculty as facs
+from Attendence_Management.models import *
 
 from .models import User, Student, Faculty
 from .decorators import already_logged_in
@@ -285,3 +286,12 @@ def proctor_management(request):
             return redirect('student:no_proctor')
     else:
         return redirect('faculty:dashboard')
+    
+def atttendence_management(request):
+    if(request.user.groups.filter(name="Student").exists()):
+        return redirect('studentdashboard')
+    elif(request.user.groups.filter(name="Faculty").exists()):
+        # return render(request , "Attendence_Management/facultyCourses.html")
+        return redirect('facultyCourses')
+    else:
+        return redirect(reverse('auth_home'))
