@@ -9,5 +9,5 @@ urlpatterns = [
     path('/student/approved/<str:pk>', views.approve, name="student-details-approve"),
     path('/student/approved/<str:pk>/<str:course_id>', views.courseApprove, name="student-course-approve"),
     path('/student/reject/<str:emails>', views.courseReject, name='student-course-reject'),
-    path('/add-students', views.addStudents, name='add-students')
+    # path('/add-students', views.addStudents, name='add-students')
 ]

@@ -77,36 +77,3 @@ def courseReject(request, emails):
             )
     email.send()
     return redirect('faculty:student-details', pk=student.USN)
-
-def addStudents(request):
-    if request.method == "POST":
-        excel_file = request.FILES['excel']
-        print(excel_file)
-        wb = openpyxl.load_workbook(excel_file)
-        worksheet = wb["Sheet1"]
-        excel_data = list()
-        data = []
-        row_data = list()
-        for cols in worksheet.iter_cols():
-            for cell in cols:
-                if str(cell.value) == 'USN':
-                    data = cols
-                    break
-                else:
-                    continue
-            if data != '':
-                break
-        for cell in data:
-            row_data.append(str(cell.value))
-        excel_data.append(row_data)
-        print(len(row_data))
-        faculty = Faculty.objects.get(email=request.user.email)
-        for usn in row_data:
-            if usn == 'USN':
-                continue
-            else:
-                student = Student.objects.get(USN=usn)
-                student.proctor_id = faculty
-                student.save()
-        return redirect('faculty:dashboard')
-    return render(request, 'faculty_dashboard_proctor/add_students.html')

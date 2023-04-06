@@ -2,11 +2,13 @@
 {% load static %}
 
 {% block content %}
-<form method="post" style="margin-left: 20%;" action="{% url 'faculty:add-students' %}" enctype="multipart/form-data">
-    {% csrf_token %}
+<form method="post" style="margin-left: 20%;" action="{% url 'office:proctor-assign' %}" enctype="multipart/form-data">
+    <a href="{% url 'office:download-excel' %}" class="btn btn-primary">Download Excel</a>
+        {% csrf_token %}
+
     <div class="position" style="margin-bottom: 1%; width: 80%;">
         <input class="form-control border" name='excel' type="file" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <br />
+        <br/>
         <div>
             <button style="background-color: #1b62bf; border: none; width: 100%; border-radius: 5px; padding: 1%; color: white" type="submit">Upload</button>
         </div>

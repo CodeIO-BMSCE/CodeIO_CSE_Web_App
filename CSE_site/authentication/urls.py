@@ -20,5 +20,6 @@ urlpatterns = [
     path("reset/done/",auth_views.PasswordResetCompleteView.as_view(template_name="reset_password/reset_password_complete.html"), name="auth_reset_password_complete",),
     path("proctor/", views.proctor_management, name="proctor_management"),
     path('student', include('student_dashboard_proctor.urls')),
-    path('faculty', include('faculty_dashboard_proctor.urls'))
+    path('faculty', include('faculty_dashboard_proctor.urls')),
+    path('office', include('office_dashboard_proctor.urls'))
 ]
