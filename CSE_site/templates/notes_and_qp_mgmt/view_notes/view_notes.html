@@ -1,0 +1,279 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Home</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css -->
+    ">
+    <link rel="stylesheet" href="{% static 'authentication/home/home.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'authentication/home/home.js' %}"></script>
+
+    <style>
+        body {
+            text-align: center;
+        }
+
+        option {
+            text-align: center;
+            font-size: large;
+        }
+
+        form {
+            margin: 0 auto;
+            max-width: 500px;
+            font-size: medium;
+            padding-top: 100px;
+            padding-bottom: 30px;
+        }
+
+        .form-group {
+            padding-bottom: 30px;
+        }
+    </style>
+</head>
+
+<script type="text/javascript">
+    var sem3 = [
+      "|Choose",
+      "19MA3BSSDM|19MA3BSSDM Statistics and Discrete Mathematics",
+      "19CS3ESMMC|19CS3ESMMC Microprocessors and Microcontrollers",
+      "19CS3PCOOJ| 19CS3PCOOJ Object Oriented Java Programming",
+      "19CS3PCDST| 19CS3PCDST Data Structures ",
+      "19CS3PCCOA|19CS3PCCOA Computer Organization and Architecture ",
+      "19CS3PCLOD|19CS3PCLOD Logic Design ",
+      "19HS3PCEVS |19HS3PCEVS Environmental Studies",
+    ];
+    var sem4 = [
+      "|Choose",
+      "19MA4BSLIA|19MA4BSLIA Linear Algebra",
+      "19CS4PCTFC|19CS4PCTFC Theoretical Foundations of Computations",
+      "19CS4PCDBM|19CS4PCDBM Database Management Systems",
+      "19CS4PCADA|19CS4PCADA Analysis and Design of Algorithms",
+      "19CS4PCOPS|19CS4PCOPS Operating Systems ",
+      "19IC3HSCPH|19IC3HSCPH Constitution of India, Professional Ethics and Human Rights",
+      "20HS4ICSAK|20HS4ICSAK SAMSKRUTHIKA KANNADA",
+      "20HS4ICBAK|20HS4ICBAK 20HS4ICBAK BALAKE KANNADA",
+    ];
+    var sem5 = [
+      "|Choose",
+      "20CS5PCAIP|20CS5PCAIP Artificial Intelligence",
+      "20CS5PCCON|20CS5PCCON Computer Networks ",
+      "20CS5PCUSP|20CS5PCUSP Unix Shell and System Programming",
+      "20CS5PCSEG|20CS5PCSEG Software Engineering",
+      "20CS5HSSPM|20CS5HSSPM Software Project Management and Finance",
+      "20CS5PEIOT|20CS5PEIOT Internet of Things",
+      "20CS5PEAJJ|20CS5PEAJJ Advanced Java and J2EE",
+      "20CS5PEADS|20CS5PEADS Advanced Data Structures",
+      "20CS5PEAAG|20CS5PEAAG Advanced Algorithms",
+      "20CS5PESCD|20CS5PESCD System Software and Compiler Design",
+      "20CS5PEACA|20CS5PEACA Advanced Computer Architecture",
+    ];
+    var sem6 = [
+      "|Choose",
+      "20CS6PCMAL|20CS6PCMAL Machine Learning ",
+      "20CS6PCCNS|20CS6PCCNS Cryptography and Network Security ",
+      "20CS6PCOMD|20CS6PCOMD Object Oriented Modelling and Design",
+      "20CS6HSMGE|20CS6HSMGE Management and Entrepreneurship",
+      "20CS6PECGV|20CS6PECGV Computer Graphics & Visualization",
+      "20CS6PEBDA|20CS6PEBDA Big Data Analytics",
+      "20CS6PENLP|20CS6PENLP Natural Language Processing",
+      "20CS6OEJVP|20CS6OEJVP Java Programming",
+      "20CS6OERPA|20CS6OERPA Robot Process Automation Design and Development ",
+    ];
+    var sem7 = [
+      "|Choose",
+      "21CS7BSBFE|21CS7BSBFE Biology for Engineers ",
+      "22CS7HSCFI|22CS7HSCFI Cyber Law , Forensics and IPR",
+      "21CS7PEBLC|21CS7PEBLC Blockchain",
+      "21CS7PENSD|21CS7PENSD NoSQL Database",
+      "21CS7PEMMC|21CS7PEMMC Multimedia Computing",
+      "21CS7PEDIS|21CS7PEDIS Distributed Systems",
+      "21CS7PESDP|21CS7PESDP Software Architecture and Design Patterns",
+      "21CS7PECCT|21CS7PECCT Cloud Computing",
+      "21CS7OEDAS|21CS7OEDAS Data Science",
+      "21CS7OEPYP|21CS7OEPYP Python Programming",
+    ];
+    var sem8 = [
+      "|Choose",
+      "21CS8PCGCT|21CS8PCGCT Green Computing",
+      "21CS8OECCT|21CS8OECCT Cloud Computing",
+      "21CS8OEBDA|21CS8OEBDA Big Data Analytics",
+    ];
+  
+    function populate1(s1, s2, s3) {
+      var s1 = document.getElementById(s1);
+      var s2 = document.getElementById(s2);
+      var s3 = document.getElementById(s3);
+      s1.style.display = "block";
+      s2.style.display = "block";
+      s3.style.display = "block";
+      s2.innerHTML = "";
+      switch (s1.value) {
+        case "1":
+          optionArray = sem1;
+          break;
+        case "2":
+          optionArray = sem2;
+          break;
+        case "3":
+          optionArray = sem3;
+          break;
+        case "4":
+          optionArray = sem4;
+          break;
+        case "5":
+          optionArray = sem5;
+          break;
+        case "6":
+          optionArray = sem6;
+          break;
+        case "7":
+          optionArray = sem7;
+          break;
+        case "8":
+          optionArray = sem8;
+          break;
+      }
+      for (var option in optionArray) {
+        var pair = optionArray[option].split("|");
+        var newOption = document.createElement("option");
+        newOption.value = pair[0];
+        newOption.innerHTML = pair[1];
+        s2.options.add(newOption);
+      }
+    }
+  </script>
+
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/notes_and_qp_mgmt">Notes and QP website</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/notes_and_qp_mgmt">Home</a></li>
+                    <li><a href="/notes_and_qp_mgmt/upload">Upload Notes</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> logout</a></li>
+                    {% else %}
+                    <li><a href="#"><span class="glyphicon glyphicon-user"></span> Sign Up</a></li>
+
+                    <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    {% endif %}
+                </ul>
+                <form class="navbar-form navbar-left" action="#">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search Notes" name="search">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" type="submit">
+                                <i class="glyphicon glyphicon-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <br>
+    <br>
+    
+    <div class="container-fluid">
+        <form class="selection" action="" method="post">
+            {% csrf_token %}
+
+            <div class="form-group" id="1">
+                <label class="form-label" for="semester">Select your semester</label>
+                <select class="form-control" name="semester" id="semester" onchange="populate1(this.id, 'course','2')">
+                    <!-- <option value="1">1</option>
+                    <option value="2">2</option> -->
+                    <option value="" selected>Choose</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                </select>
+            </div>
+
+            <div class="form-group" id="2">
+                <label class="form-label" for="course">Select your course</label>
+                <select class="form-control course" name="course" id="course">
+                    <option value="" selected>Choose your semester first</option>
+                    <!-- <option value="os">OS</option>
+                    <option value="java">Java</option> -->
+                </select>
+            </div>
+
+            <!-- <div class="form-group">
+                <label class="form-label" for="unit">Select the unit you want to view.</label>
+                <select class="form-control" name="unit" id="unit">
+                    <option value="" selected>Choose</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div> -->
+
+            <div class="form-group">
+                <label class="form-label" for="resource">What do you want to view?</label>
+                <select class="form-control" name="resource" id="resource">
+                    <option value="" selected>Choose</option>
+                    <option value="notes">Notes</option>
+                    <option value="cie">CIE</option>
+                    <option value="see">SEE</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-success">View</button>
+        </form>
+
+        
+
+        <div class="customcontainer">
+            <div class="boxes"
+                style="display:flex; flex-direction: row; align-items: center; justify-content: space-evenly; margin: 20px 0px;">
+                <h3>{{semester}}</h3>
+                <h3>{{course}}</h3>
+                <h3>{{notes}}</h3>
+            </div>
+            <div class="querry"
+                style="  display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; word-wrap: break-word; color:black">
+                {% for file in files %}
+                <div class="files"
+                    style="display:flex; flex-direction: column; align-items: center; justify-content: center; margin: 10px 0">
+                    <a href="pdf_view/{{path}}/{{file}}" target="_blank"
+                        style="display:flex; flex-direction: column; align-items: center; justify-content: center; width: 50%;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/PDF_file_icon.svg/400px-PDF_file_icon.svg.png?20220802235851"
+                            alt="Textbook" width="80px" />{{file}}
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+    
+    
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
