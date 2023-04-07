@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, td {
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}
+</style>
+</head>
+<body>
+<h2 class="text">{{message}}</h2>
+<br>
+<br>
+<table>
+    <tr>
+      <th>Sl No.</th>
+      <th>Course Name</th>
+      <th>Credits</th>
+      <th>Registration</th>
+      <th>Attempt No</th>
+      <th>Attendence</th>
+      <th>CIE</th>
+      <th>SEE</th>
+      <th>Grade Points</th>
+    </tr>
+    {% for course in courses %}
+  <tr>
+    <td>{{forloop.counter}}</td>
+    <td>{{course.courseName}}</td>
+    <td>{{course.credit}}</td>
+    <td>{{course.registration}}</td>
+    <td>{{course.attemptNumber}}</td>
+    <td>{{course.attendance}}</td>
+    <td>{{course.CIE}}</td>
+    <td>{{course.SEE}}</td>
+    <td>{{course.GradePoints}}</td>
+  </tr>
+  {% endfor %}
+</table><br>
+
+Regards
+<h3 class="text" style="color: grey;">{{name}}</h3>
+<p class="text" style="color: grey;">{{designation}}</p>
+<p class="text" style="color: grey;">Department of Computer Science & Engg,</p>
+<p class="text" style="color: grey;">BMS College of Engineering,</p>
+<p class="text" style="color: grey;">Bull Temple Road,</p>
+<p class="text" style="color: grey;">Bangalore-560019.</p>
+
+</body>
+</html>

@@ -327,9 +327,9 @@ def proctor_management(request):
     
 def atttendence_management(request):
     if(request.user.groups.filter(name="Student").exists()):
-        return redirect('attendance:studentdashboard')
+        return redirect('studentdashboard')
     elif(request.user.groups.filter(name="Faculty").exists()):
         # return render(request , "Attendence_Management/facultyCourses.html")
-        return redirect('attendance:facultyCourses')
+        return redirect('facultyCourses')
     else:
-        return redirect(reverse('attendance:auth_home'))
+        return redirect(reverse('auth_home'))

@@ -23,4 +23,5 @@ urlpatterns = [
     path('faculty', include('faculty_dashboard_proctor.urls')),
     path('office', include('office_dashboard_proctor.urls')),
     path('attendence_management',views.atttendence_management,name="attendence_management"),
+    path('attendence',include('Attendence_Management.urls'))
 ]

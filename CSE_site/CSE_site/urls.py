@@ -18,9 +18,9 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path('', views.landing_page, name='landing_page'),
+    path('dashboard', views.landing_page, name='landing_page'),
     path('admin/', admin.site.urls),
     path('cie_allocator/', include('online_cie_allocator.urls')),
-    path('auth/', include('authentication.urls')),
+    path('', include('authentication.urls')),
     path('student', include('student_dashboard_proctor.urls'))
 ]

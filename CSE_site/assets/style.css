@@ -43,6 +43,7 @@ body{
     margin-right: 3%;
     border-radius: 10px;
 }
+
 .caption {
     font-family: 'Sono', sans-serif;
     font-weight: bolder;
@@ -56,6 +57,7 @@ body{
     background-color: #1B62BF;
     color: white;
 }
+
 
 .list-style{
     margin-top: 7%;
@@ -81,6 +83,7 @@ body{
     text-decoration: none;
     color: white;
 }
+
 .bmsce-logo img{
     width: 60% !important;
     height: auto !important;

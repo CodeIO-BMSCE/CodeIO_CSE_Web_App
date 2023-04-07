@@ -2,6 +2,32 @@
 {% load static %}
 
 {% block content %}
+<style>
+    .office a{
+        text-decoration: none;
+        color: #5697BF;
+    }
+    .office a:hover{
+        text-decoration: none;
+        color: white;
+    }
+    .office:hover{
+        background-color: #5697BF;
+        color: white;
+    }
+    
+    .office:hover a{
+        background-color: #5697BF;
+        color: white;
+    }
+    .office{
+        margin-top: 3%;
+        color: #5697BF;
+        border: 1px solid #5697BF;
+        margin-right: 3%;
+        border-radius: 10px;
+    }
+</style>
 <div class="row">
     <div class="col-1"></div>
     <div class="col info_img">
@@ -14,7 +40,7 @@
         <div class="list-style">
             <ul>
                 {% if olink %}
-                <li class="office"><a href="{% url olink %}">{{ olink_title }}</a></li>
+                <li class="office"><a href="{% url olink %}">{{ olink_title }}</a></li><br>
                 {% endif %}
                 <li class="student"><a href="{% url flink %}">{{ flink_title }}</a></li>
                 <li class="faculty"><a href="{% url slink %}">{{ slink_title }}</a></li>

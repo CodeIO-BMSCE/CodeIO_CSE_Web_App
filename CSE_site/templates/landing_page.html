@@ -1,14 +1,62 @@
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page</title>
-</head>
-<body>
-    <h1>This is going to be the landing page</h1>
-    <a href="{% url 'auth_logout' %}">logout</a>
-    <a href="{% url 'proctor_management' %}">proctor_management</a>
-    <a href="{% url 'attendence_management' %}">attendence_management</a>
-</body>
-</html>
+{% extends './base.html' %}
+{% load static %}
+
+{% block content %}
+<div clas="container-lg" style="padding: 5%;">
+    <div class="row" style="width:100%;">
+        <div class="col-md-4">
+            <div style="margin-left:50%; width:100%; height: 5%;">
+                <button style="padding: 5%; margin-left: 10%; color: white; border: none; box-shadow: 2px 2px 17px -3px rgba(78,95,117,1); background-color: #283D59; border-radius: 10px; margin-bottom: 2%;">
+                  <a
+                    style="text-decoration: none; color: white;"
+                    href="{% url 'proctor_management' %}"
+                    ><span>Proctor Management Portal</span></a
+                  >
+                </button>
+              </div></div>
+        <div class="col-md-4">
+            <div style="margin-left:20%;  width:100%; height: 5%;">
+                <button style="padding: 5%; margin-left: 10%; color: white; border: none; box-shadow: 2px 2px 17px -3px rgba(124,130,133,1); background-color: #232526; border-radius: 10px; margin-bottom: 2%;">
+                  <a
+                    style="text-decoration: none; color: white;"
+                    href="{% url 'attendence_management' %}"
+                    ><span>Attendence Management Portal</span></a
+                  >
+                </button>
+              </div></div>
+        <div class="col-md-4">
+            <div style="margin-right:50%; width:100%; height: 5%;">
+                <button style="padding: 5%; margin-left: 10%; color: white; border: none; box-shadow: 2px 2px 17px -3px rgba(76,118,153,1); background-color: #2A7ABF; border-radius: 10px; margin-bottom: 2%;">
+                  <a
+                    style="text-decoration: none; color: white;"
+                    href="#"
+                    ><span>Add your project link here</span></a
+                  >
+                </button>
+              </div>
+        </div>
+    </div><br>
+    <div class="row" style="width:100%;">
+        <div class="col-md-2"><a href="#"></a></div>
+        <div class="col-md-4"><center><div style=" ">
+                <button style="padding: 5%; margin-left: 10%; color: white; border: none; box-shadow: 2px 2px 17px -3px rgba(113,151,173,1); background-color: #5697BF; border-radius: 10px; margin-bottom: 2%;">
+                  <a
+                    style="text-decoration: none; color: white;"
+                    href="#"
+                    ><span>Add your project link here</span></a
+                  >
+                </button>
+              </div></center></div>
+        <div class="col-md-4"><center><div style=" height: 5%;">
+                <button style="padding: 5%; margin-left: 10%; color: white; border: none; box-shadow: 2px 2px 17px -3px rgba(168,67,67,1); background-color: #BF0404; border-radius: 10px; margin-bottom: 2%;">
+                  <a
+                    style="text-decoration: none; color: white;"
+                    href="#"
+                    ><span>Add your project link here</span></a
+                  >
+                </button>
+              </div></center></div>
+        <div class="col-md-2"><a href="#"></a></div>
+    </div>
+</div>
+{% endblock content %}
