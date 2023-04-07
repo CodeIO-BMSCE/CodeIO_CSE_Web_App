@@ -11,5 +11,5 @@ urlpatterns = [
     path('/courses/edit/', views.editCourseDetails, name='edit'),
     path('/courses/update/', views.updateCourseDetails, name='update'),
     path("/no_proctor", views.no_proc, name="no_proctor"),
-    
+    path("/courses/fastrack/register", views.registerFastrack, name="fastrack_register"),
 ]

@@ -234,6 +234,15 @@
                 ><span>Add/Edit Student Details</span></a
               >
             </button>
+            <button class="website notification" style="padding: 1%">
+              <a
+                style="text-decoration: none"
+                href="{% url 'student:fastrack_register' %}"
+              >
+                <span>Register for Fastrack</span
+                ><span class="badge">{{req}}</span></a
+              >
+            </button>
             {% if unapproved != 0 %}
             <button class="website notification" style="padding: 1%">
               <a
@@ -401,16 +410,31 @@
               <th scope="col">Course Name</th>
               <th scope="col">Credits</th>
               <th scope="col">Sem</th>
+              <th scope="col">Attempt Number</th>
             </tr>
           </thead>
           <tbody>
-            {% for course in courses %}
+            {% for course in fcourses %}
             <tr>
               <td>{{forloop.counter}}</td>
-              <td>{{fasttrack.courseCode}}</td>
-              <td>{{fasttrack.courseName}}</td>
-              <td>{{fasttrack.credit}}</td>
-              <td>{{fasttrack.sem}}</td>
+              <td>{{course.courseCode}}</td>
+              <td>{{course.courseName}}</td>
+              <td>{{course.credit}}</td>
+              <td>{{course.sem}}</td>
+              <td>{{course.attemptNumber}}</td>
+              <td>
+                {% if course.is_approved %}
+                <button style="padding: 2%; margin-left: 10%; color: white; border: none; background-color: #00e600; border-radius: 10px;">
+                <span>Approved</span>
+                </button>
+                {% else %}
+                <div style="padding: 2%;">
+                  <button style="padding: 2%; margin-left: 10%; color: white; border: none; background-color: #BF0404; border-radius: 10px;">
+                    <span><h6>Waiting for Approval</h6></span>
+                    </button>
+                </div>
+                {% endif %}
+              </td>
             </tr>
             {% endfor %}
           </tbody>

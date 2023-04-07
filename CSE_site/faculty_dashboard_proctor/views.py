@@ -53,7 +53,7 @@ def studentDetails(request, pk):
     fastrack = Fastrack.objects.filter(USN=pk, is_active=True)
     length = fastrack.count()
     request.session['current_usn'] = pk
-    context = {'s_info': s_info,'not_ap': not_ap, 'courses': courses, 'fasttrack': fastrack, 'fast_count': length, 'email': student.email, 'usn': student.USN, 'marks': marks, 'cour': cour, 'sem': student.current_sem}
+    context = {'s_info': s_info,'not_ap': not_ap, 'courses': courses, 'fastrack': fastrack, 'fast_count': length, 'email': student.email, 'usn': student.USN, 'marks': marks, 'cour': cour, 'sem': student.current_sem}
     return render(request, 'faculty_dashboard_proctor/student_details.html', context)
 
 def approve(request, pk):
@@ -64,7 +64,7 @@ def approve(request, pk):
 
 def courseApprove(request, pk, course_id):
     print(type(course_id))
-    if int(course_id) == 0:
+    if course_id == "0":
         courses = Sem.objects.filter(USN=pk, is_active=True)
         for course in courses:
             course.is_approved = True
@@ -75,7 +75,45 @@ def courseApprove(request, pk, course_id):
         course.save()
     return redirect('faculty:student-details', pk=pk)
 
+def courseApproveFast(request, pk, course_id):
+    print(course_id)
+    if course_id == "0":
+        courses = Fastrack.objects.filter(USN=pk, is_active=True)
+        for course in courses:
+            sem_ob = Sem.objects.get(USN=pk, courseCode=course.courseCode)
+            sem_ob.attemptNumber = sem_ob.attemptNumber + 1
+            sem_ob.save()
+            course.is_approved = True
+            course.save()
+    else:
+        print(course_id)
+        course = Fastrack.objects.get(USN=pk, courseCode=course_id)
+        sem_ob = Sem.objects.get(USN=pk, courseCode=course.courseCode)
+        sem_ob.attemptNumber = sem_ob.attemptNumber + 1
+        sem_ob.save()
+        course.is_approved = True
+        course.save()
+    return redirect('faculty:student-details', pk=pk)
+
 def courseReject(request, emails):
+    student=Student.objects.get(email=emails)
+    message = 'Looks like there is a mistake in your registered courses, check out the unapproved courses and update it'
+    faculty = Faculty.objects.get(email=request.user.email)
+    name = faculty.name
+    template = render_to_string('faculty_dashboard_proctor/send_fill.html', {'message': message, 'name': name})
+    email = EmailMessage(
+        
+                message,
+                template,
+                settings.EMAIL_HOST_USER,
+                [emails],
+                # fail_silently=False,
+                
+            )
+    email.send()
+    return redirect('faculty:student-details', pk=student.USN)
+
+def courseRejectFast(request, emails):
     student=Student.objects.get(email=emails)
     message = 'Looks like there is a mistake in your registered courses, check out the unapproved courses and update it'
     faculty = Faculty.objects.get(email=request.user.email)
@@ -239,3 +277,40 @@ def writeEmail(request):
 def customMail(request):
     return render(request, 'faculty_dashboard_proctor/custom_email_form.html')
     
+
+def addfastMarks(request):
+    if request.method == "POST":
+        excel_file = request.FILES['excel']
+        print(excel_file)
+        wb = pd.read_excel(excel_file)
+        i=0
+        usns = []
+        for usn in wb['USN']:
+            if i==0:
+                i+=1
+                continue
+            i+=1
+            usns.append(usn)
+        
+        for i in range(0, len(usns)):
+            for cols in wb.columns:
+                if cols == 'USN':
+                    continue
+                if not('Unnamed' in cols):
+                    curr_col = "".join(cols.rstrip())
+                print(curr_col)
+                if Sem.objects.filter(USN=usns[i], courseCode=str(curr_col)).exists():
+                    if Fastrack.objects.filter(USN=usns[i], courseCode=str(curr_col)).exists():
+                        fastrack = Fastrack.objects.get(USN=usns[i], courseCode=str(curr_col))
+                        fastrack.is_active = False
+                        fastrack.save()
+                    sem = Sem.objects.get(USN=usns[i], courseCode=str(curr_col))
+                    if wb[cols][0] == 'CIE' and wb[cols][i+1] != None:
+                        sem.CIE = wb[cols][i+1]
+                    if wb[cols][0] == 'SEE' and wb[cols][i+1] != None:
+                        sem.SEE = wb[cols][i+1]
+                    if wb[cols][0] == 'Grade' and wb[cols][i+1] != None:
+                        sem.GradePoints = wb[cols][i+1]
+                    sem.save()
+        return redirect('faculty:dashboard')
+    return render(request, 'faculty_dashboard_proctor/update_fastrack_marks.html')

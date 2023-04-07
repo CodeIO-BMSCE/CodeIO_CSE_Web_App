@@ -5,6 +5,7 @@ from . import models
 from student_dashboard_proctor.models import Student, courseRequest, Sem, StudentDetail, Fastrack
 from .forms import StudentDetailsForm
 from django.db.models import Count
+from django.forms import formset_factory
 
 # Create your views here.
 @login_required
@@ -22,7 +23,8 @@ def dashboard(request, pk):
     coursess=Sem.objects.filter(USN=pk, sem=sem, is_approved=False)
     fastrack = models.Fastrack.objects.filter(USN=pk, is_active=True)
     length = fastrack.count()
-    context = {'courses': courses, 'req': number.count(), 'sem': sem, 's_info': s_info, 'student': student, 'usn': student.USN, 'fast_count': length, 'fasttrack': fastrack, 'unapproved': len(coursess)}
+    fcourses = models.Fastrack.objects.filter(USN=pk, is_active=True, is_approved=False)
+    context = {'courses': courses, 'req': number.count(), 'sem': sem, 's_info': s_info, 'student': student, 'usn': student.USN, 'fast_count': length, 'fastrack': fastrack, 'fcourses':fcourses, 'unapproved': len(coursess)}
     return render(request, 'student_dashboard_proctor/dashboard.html', context)
 
 
@@ -163,3 +165,30 @@ def updateCourseDetails(request):
 
 def no_proc(request):
     return render(request, 'student_dashboard_proctor/no_proctor.html')
+
+@login_required
+def registerFastrack(request):
+    student = Student.objects.get(email=request.user.email)
+    if request.method == "POST":
+        num_subjects = int(request.POST.get('fastrack_subjects'))
+        o=num_subjects
+        for i in range(1, num_subjects+1):
+            ccode="".join(request.POST['code%s' %(o)].rstrip())
+            sem=int(request.POST['sem%s' %(o)])
+            cname=request.POST['name%s' %(o)]
+            credit=request.POST['credits%s' %(o)]
+            attempt=request.POST['attempt%s' %(o)]
+            registration=request.POST['reg%s' %(o)]
+            # last_attempt = Sem.objects.filter(
+            #     USN=student.USN,
+            #     sem=student.current_sem,
+            #     courseCode=ccode
+            # )
+            # # Increment the attempt number
+            # attempt = last_attempt.attemptNumber + 1 if last_attempt else 1
+            fastrackob = Fastrack(USN=student.USN, sem=sem, courseName=cname, courseCode=ccode, credit=credit, registration=registration, attemptNumber=attempt)
+            fastrackob.save()
+        return redirect('student:dashboard', pk=student.USN)
+    else:
+        context = {'usn': student.USN, 'number': range(1, 5)}
+        return render(request, 'student_dashboard_proctor/fastrack_course_register_form.html', context)
