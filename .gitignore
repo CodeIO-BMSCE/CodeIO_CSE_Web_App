@@ -1,2 +1,9 @@
 venv
 host_email_data.py
+
+# Django stuff
+*.log
+*.pot
+*.pyc
+__pycache__
+db.sqlite3
