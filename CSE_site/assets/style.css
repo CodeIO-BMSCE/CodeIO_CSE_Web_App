@@ -37,6 +37,7 @@ body{
     color: white;
 }
 .student{
+    margin-top: 3%;
     color: #1B62BF;
     border: 1px solid #1B62BF;
     margin-right: 3%;
@@ -50,6 +51,12 @@ body{
     background-color: #1B62BF;
     color: white;
 }
+
+.student:hover a{
+    background-color: #1B62BF;
+    color: white;
+}
+
 .list-style{
     margin-top: 7%;
     width: 60% !important;
@@ -98,6 +105,33 @@ body{
 .faculty:hover{
     background-color: #2db300;
 }
+.faculty:hover a{
+    background-color: #2db300;
+    color: white;
+}
+
+.office{
+    border: 1px solid #4fe4e4;
+    margin-right: 3%;
+    border-radius: 10px;
+}
+.office a{
+    text-decoration: none;
+    color: #4fe4e4;
+}
+.office a:hover{
+    text-decoration: none;
+    color: white;
+}
+.office:hover{
+    background-color: #4fe4e4;
+}
+
+.office:hover a{
+    background-color: #4fe4e4;
+    color: white;
+}
+
 .info_img img{
     width: 90% !important;
     height: auto !important;

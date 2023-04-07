@@ -11,6 +11,7 @@ urlpatterns = [
     path('login/student/', views.login_student, name='auth_login_student'),
     path('register/faculty/', views.register_faculty, name='auth_register_faculty'),
     path('login/faculty/', views.login_faculty, name='auth_login_faculty'),
+    path('login/office/', views.login_office, name='auth_login_office'),
     path('logout/', views.logout_user, name="auth_logout"),
     path('verify_email/<uidb64>/<token>/', views.verify_email, name="auth_verify_email"),
     path('forgot_password/', views.forgot_password, name='auth_forgot_password'),
@@ -20,6 +21,6 @@ urlpatterns = [
     path("proctor/", views.proctor_management, name="proctor_management"),
     path('student', include('student_dashboard_proctor.urls')),
     path('faculty', include('faculty_dashboard_proctor.urls')),
+    path('office', include('office_dashboard_proctor.urls')),
     path('attendence_management',views.atttendence_management,name="attendence_management"),
-    path('attendence',include('Attendence_Management.urls'))
 ]

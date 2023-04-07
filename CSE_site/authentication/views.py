@@ -32,16 +32,19 @@ def send_activation_email(user, request):
 
     send_mail(email_subject, email_body, settings.EMAIL_HOST_USER, [user.email])
 
+@already_logged_in(url="landing_page")
 def auth_home(req):
     context = {
         "flink_title": "Login",
         "flink": "auth_login_home",
         "slink_title": "Register",
         "slink": "auth_register_home",
+
     }
 
     return render(req, "auth_home.html", context)
 
+@already_logged_in(url="landing_page")
 def register_home(req):
     context = {
         "flink_title": "Student Register",
@@ -51,15 +54,19 @@ def register_home(req):
     }
     return render(req, "auth_home.html", context)
 
+@already_logged_in(url="landing_page")
 def login_home(req):
     context = {
         "flink_title": "Student Login",
         "flink": "auth_login_student",
         "slink_title": "Faculty Login",
         "slink": "auth_login_faculty",
+        "olink_title": "Office Login",
+        "olink": "auth_login_office",
     }
     return render(req, "auth_home.html", context)
 
+@already_logged_in(url="landing_page")
 def register_student(req):
     context = {}
 
@@ -108,6 +115,8 @@ def register_student(req):
 
     return render(req, "register_student.html", context)
 
+
+@already_logged_in(url="landing_page")
 def register_faculty(req):
     context = {}
     if req.method == 'POST':
@@ -208,6 +217,32 @@ def login_faculty(req):
 
     return render(req, "login_faculty.html", {})
 
+@already_logged_in(url="landing_page")
+def login_office(req):
+    context = {}
+
+    print(req.user)
+
+    if req.method == "POST":
+        email = req.POST.get('email')
+        password = req.POST.get('password')
+
+        user = authenticate(req, email=email, password=password)
+
+        if not user:
+                messages.add_message(req,messages.ERROR, "Invalid credentials, try again")
+                return render(req, 'login_office.html', context,  status=409)
+        
+        if not user.is_email_verified or not user.groups.filter(name="Office"):
+                messages.add_message(req, messages.ERROR, "Use the Office Email ID")
+                return render(req, 'login_office.html', context,  status=409)
+
+        login(req, user)
+        return redirect(reverse("landing_page"))
+
+    return render(req, "login_office.html", {})
+
+
 def forgot_password(req):
     if req.method == "POST":
         email = req.POST['email']
@@ -284,14 +319,17 @@ def proctor_management(request):
         else:
             #edit the message
             return redirect('student:no_proctor')
-    else:
+    elif(request.user.groups.filter(name="Faculty").exists()):
         return redirect('faculty:dashboard')
+    else:
+        return redirect('office:dashboard')
+
     
 def atttendence_management(request):
     if(request.user.groups.filter(name="Student").exists()):
-        return redirect('studentdashboard')
+        return redirect('attendance:studentdashboard')
     elif(request.user.groups.filter(name="Faculty").exists()):
         # return render(request , "Attendence_Management/facultyCourses.html")
-        return redirect('facultyCourses')
+        return redirect('attendance:facultyCourses')
     else:
-        return redirect(reverse('auth_home'))
+        return redirect(reverse('attendance:auth_home'))

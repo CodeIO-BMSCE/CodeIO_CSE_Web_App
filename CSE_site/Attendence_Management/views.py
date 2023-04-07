@@ -88,7 +88,7 @@ def StudentCourse(request):
 
     if attendedClasses == 0:
         messages.info(request,"You haven't attended any classes yet :(")
-        return redirect(reverse('studentdashboard'))
+        return redirect(reverse('attendance:studentdashboard'))
     per = (attendedClasses/totalClasses)*100
     status = {
         'courseTitle':courseTitle ,
@@ -117,7 +117,7 @@ def facultyCourses(request):
             new_students = request.FILES.get('classfile')
             if not new_students.name.endswith('xlsx'):
                 messages.info(request , 'Use the excel file only')
-                return render(request , 'facultyCourses.html')
+                return render(request , '../templates/Attendence_Management/facultyCourses.html')
             
             imported_data = dataset.load(new_students.read() , format='xlsx')
             for data in imported_data:
@@ -147,7 +147,7 @@ def facultyAttendance(request):
         new_students = request.FILES.get('classfile')
         if not new_students.name.endswith('xlsx'):
             messages.info(request , 'Use the excel file only')
-            return render(request , 'facultyCourses.html')
+            return render(request , '../templates/Attendence_Management/facultyCourses.html')
         
         imported_data = dataset.load(new_students.read() , format='xlsx')
         for data in imported_data:
@@ -167,4 +167,4 @@ def facultyAttendance(request):
     return render(request,'../templates/Attendence_Management/facultyAttendance.html' ,{'students':students , 'count':count , 'section':section , 'courseTitle':courseTitle})
 
 def Logout(request):
-    return redirect('auth_logout')
+    return redirect('attendance:auth_logout')

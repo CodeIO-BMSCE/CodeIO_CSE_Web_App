@@ -35,42 +35,38 @@
     background-color: #dddddd;
   }
 </style>
-<button class="website notification" style="padding: 1%; margin-left: 50%">
-  <a style="text-decoration: none" href="{% url 'student:update'  %}"
-    ><span>Update</span></a>
-</button>
+{% for i in sems %}
 <div class="center" style="padding: 2%">
-  <div class="center" style="padding: 1%;">
-    <div class="container" style="background-color: #c0daf1; padding: 1%; border: 1px solid #205d92; border-radius: 25px;">
-        <h4 style="color: #205d92; font-family: 'Sono', sans-serif">Courses registered for semester {{sem}}
-        </h4>
-    </div>
+  <div style="background-color: #c0daf1; padding: 1%; border: 1px solid #205d92; border-radius: 25px; margin-bottom: 2%; width: 25%;">
+      <h4 style="color: #205d92; font-family: 'Sono', sans-serif">Semester {{i}}
+      </h4>
+  </div>
+<table>
+  <tr>
+    <th>Course Name</th>
+    <th>Credits</th>
+    <th>Registration</th>
+    <th>Attempt No</th>
+    <th>Attendence</th>
+    <th>CIE</th>
+    <th>SEE</th>
+    <th>Grade Points</th>
+  </tr>
+  {% for course in courses %}
+  {% if course.sem == i %}
+  <tr>
+    <td>{{course.courseName}}</td>
+    <td>{{course.credit}}</td>
+    <td>{{course.registration}}</td>
+    <td>{{course.attemptNumber}}</td>
+    <td>{{course.attendance}}</td>
+    <td>{{course.CIE}}</td>
+    <td>{{course.SEE}}</td>
+    <td>{{course.GradePoints}}</td>
+  </tr>
+  {% endif %}
+  {% endfor %}
+</table>
 </div>
-  <table>
-    <tr>
-      <th>Sl.no</th>
-      <th>Course Name</th>
-      <th>Credits</th>
-      <th>Registration</th>
-      <th>Attempt No</th>
-      <th>Attendence</th>
-      <th>CIE</th>
-      <th>SEE</th>
-      <th>Grade Points</th>
-    </tr>
-    {% for course in courses %}
-    <tr>
-      <td>{{forloop.counter}}</td>
-      <td>{{course.courseName}}</td>
-      <td>{{course.credit}}</td>
-      <td>{{course.registration}}</td>
-      <td>{{course.attemptNumber}}</td>
-      <td>{{course.attendance}}</td>
-      <td>{{course.CIE}}</td>
-      <td>{{course.SEE}}</td>
-      <td>{{course.GradePoints}}</td>
-    </tr>
-    {% endfor %}
-  </table>
-</div>
+{% endfor %}
 {% endblock content %}

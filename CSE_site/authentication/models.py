@@ -42,3 +42,15 @@ class Faculty(User):
     class Meta:
         verbose_name = "Faculty"
         verbose_name_plural = "Faculties"
+
+
+class Office(User):
+    location = models.CharField(max_length=255)
+
+    def __str__(self):
+        return "<Off " + self.email + ">"
+    
+    class Meta:
+        verbose_name = "Office"
+        verbose_name_plural = "Office"
+

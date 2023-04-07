@@ -1,6 +1,6 @@
 from django.contrib import admin
 # from .models import User
-from .models import Student, Faculty
+from .models import Student, Faculty,Office
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('name','email')
@@ -20,6 +20,10 @@ class FacultyAdmin(admin.ModelAdmin):
     list_display = ('name','email')
     search_fields = ('name','email', 'designation')
 
+class OfficeAdmin(admin.ModelAdmin):
+    list_display = ('name','email')
+    search_fields = ('name','email', 'location')
+
     # def has_add_permission(self, _):
     #     return False
 
@@ -27,3 +31,4 @@ class FacultyAdmin(admin.ModelAdmin):
 # admin.site.register(User,UserAdmin)
 admin.site.register(Student, StudentAdmin)
 admin.site.register(Faculty, FacultyAdmin)
+admin.site.register(Office, OfficeAdmin)

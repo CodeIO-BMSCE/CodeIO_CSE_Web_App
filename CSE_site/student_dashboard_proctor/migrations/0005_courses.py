@@ -7,7 +7,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('student_dashboard_proctor', '0004_remove_student_user'),
+        ("student_dashboard_proctor", "0004_remove_student_user"),
     ]
 
     operations = [

@@ -22,4 +22,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('cie_allocator/', include('online_cie_allocator.urls')),
     path('auth/', include('authentication.urls')),
+    path('student', include('student_dashboard_proctor.urls'))
 ]

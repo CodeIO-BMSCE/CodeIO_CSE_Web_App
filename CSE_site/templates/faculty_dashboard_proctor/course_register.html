@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<form method="post" style="margin-left: 20%;" action="{% url 'faculty:send-register-form' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="position" style="margin-bottom: 1%; width: 80%;">
+        <label for="subjects" class="form-label text" style="font-size: 25px;">Number of Subjects</label><br>
+        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="subjects">
+            <option selected>-- Select --</option>
+            {% for i in '123456789'|make_list %}
+            <option value='{{i}}'>{{i}}</option>
+            {% endfor %}
+          </select>
+        <br />
+        <label for="sems" class="form-label text" style="font-size: 25px;">Sem</label><br>
+        <select class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="sems">
+            <option selected>-- Select --</option>
+            {% for i in '12345678'|make_list %}
+            <option value='{{i}}'>{{i}}</option>
+            {% endfor %}
+          </select>
+        <br />
+        <div>
+            <button style="background-color: #1b62bf; border: none; width: 100%; border-radius: 5px; padding: 1%; color: white" type="submit">Send</button>
+        </div>
+    </div>
+</form>
+{% endblock content %}
