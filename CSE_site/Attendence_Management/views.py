@@ -88,7 +88,7 @@ def StudentCourse(request):
 
     if attendedClasses == 0:
         messages.info(request,"You haven't attended any classes yet :(")
-        return redirect(reverse('attendance:studentdashboard'))
+        return redirect(reverse('studentdashboard'))
     per = (attendedClasses/totalClasses)*100
     status = {
         'courseTitle':courseTitle ,
@@ -167,4 +167,4 @@ def facultyAttendance(request):
     return render(request,'../templates/Attendence_Management/facultyAttendance.html' ,{'students':students , 'count':count , 'section':section , 'courseTitle':courseTitle})
 
 def Logout(request):
-    return redirect('attendance:auth_logout')
+    return redirect('auth_logout')

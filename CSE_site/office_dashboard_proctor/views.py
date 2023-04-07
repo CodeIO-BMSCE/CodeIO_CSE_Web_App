@@ -25,12 +25,13 @@ def proctor_assign(request):
         df = pd.read_excel(excel_file)
         for index, row in df.iterrows():
             std_usn = row['USN']
-            proctor_email = row['Proctor-Email-ID']
+            proctor_email = row['Proctor Email']
+            std_sem = int(row['Sem'])
             try:
                 student = Student.objects.get(USN=std_usn)
                 proctor = Faculty.objects.get(email=proctor_email)
                 student.proctor_id = proctor
-                student.current_sem=1
+                student.current_sem=std_sem
                 student.save()
             except (Student.DoesNotExist, Faculty.DoesNotExist):
                 pass
@@ -48,6 +49,7 @@ def download_excel(request):
     ws['D1'] = 'Email'
     ws['E1'] = 'Proctor Name'
     ws['F1'] = 'Proctor Email'
+    ws['G1'] = 'Sem'
     filename = 'proctor_assignment_sheet.xlsx'
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'

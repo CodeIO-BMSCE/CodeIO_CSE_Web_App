@@ -116,7 +116,7 @@ def addStudents(request):
 def sendCourse(request):
     if request.method == "POST":
         faculty = Faculty.objects.get(email=request.user.email)
-        students = Student.objects.filter(proctor_id=faculty, current_sem=request.POST['sems']-1)
+        students = Student.objects.filter(proctor_id=faculty, current_sem=int(request.POST['sems'])-1)
         emails= []
         for stud in students:
             emails.append(stud.email)
