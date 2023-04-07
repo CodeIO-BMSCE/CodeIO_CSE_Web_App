@@ -1,6 +1,7 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+from django.shortcuts import render, HttpResponse
 
-# Create your views here.
-def home(request):
+def office_view(req):
+    return render(req, "cie_allocator_office.html", {})
+
+def student_view(req):
     return HttpResponse("This is CIE Allocator Home Page")

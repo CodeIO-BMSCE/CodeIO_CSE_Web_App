@@ -27,7 +27,7 @@ class Student(User):
     usn = models.CharField(max_length=255)
 
     def __str__(self):
-        return "<Stud " + self.usn + ">"
+        return "<Student " + self.usn + ">"
 
     class Meta:
         verbose_name = "Student"
@@ -37,7 +37,7 @@ class Faculty(User):
     designation = models.CharField(max_length=255)
 
     def __str__(self):
-        return "<Stud " + self.email + ">"
+        return "<Faculty " + self.email + ">"
     
     class Meta:
         verbose_name = "Faculty"
@@ -48,7 +48,7 @@ class Office(User):
     location = models.CharField(max_length=255)
 
     def __str__(self):
-        return "<Off " + self.email + ">"
+        return "<Office " + self.email + ">"
     
     class Meta:
         verbose_name = "Office"

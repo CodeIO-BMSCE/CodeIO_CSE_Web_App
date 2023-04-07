@@ -20,10 +20,10 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    path('dashboard', views.landing_page, name='landing_page'),
     path('admin/', admin.site.urls),
+    path('dashboard/', views.landing_page, name='landing_page'),
     path('cie_allocator/', include('online_cie_allocator.urls')),
     path('', include('authentication.urls')),
     path('notes_and_qp_mgmt/', include('notes_and_qp_mgmt.urls')),
-    path('student', include('student_dashboard_proctor.urls'))
+    path('student/', include('student_dashboard_proctor.urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
