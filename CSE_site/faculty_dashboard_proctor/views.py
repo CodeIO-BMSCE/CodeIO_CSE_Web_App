@@ -1,19 +1,12 @@
 from django.shortcuts import render, redirect, HttpResponse, HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from .models import Faculty
-<<<<<<< HEAD
-from student_dashboard_proctor.models import Student, StudentDetail, Sem, Fastrack
-=======
 from student_dashboard_proctor.models import Student, StudentDetail, Sem, Fastrack, courseRequest
->>>>>>> main
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
 from django.conf import settings
 import openpyxl
-<<<<<<< HEAD
-=======
 import pandas as pd
->>>>>>> main
 
 # Create your views here.
 @login_required
@@ -45,13 +38,10 @@ def studentDetails(request, pk):
         sendFillMail(request, message, 'Sudeep' ,student.email)
         return redirect('faculty:dashboard')
     courses = Sem.objects.filter(sem=student.current_sem, USN=pk)
-<<<<<<< HEAD
-=======
     not_ap = False
     for co in courses:
         if not co.is_approved:
             not_ap = True
->>>>>>> main
     if courses.exists():
         cour = True
         marks = courses[0].CIE == None
@@ -60,11 +50,7 @@ def studentDetails(request, pk):
         marks = False
     fastrack = Fastrack.objects.filter(USN=pk, is_active=True)
     length = fastrack.count()
-<<<<<<< HEAD
-    context = {'s_info': s_info, 'courses': courses, 'fasttrack': fastrack, 'fast_count': length, 'email': student.email, 'usn': student.USN, 'marks': marks, 'cour': cour}
-=======
     context = {'s_info': s_info,'not_ap': not_ap, 'courses': courses, 'fasttrack': fastrack, 'fast_count': length, 'email': student.email, 'usn': student.USN, 'marks': marks, 'cour': cour, 'sem': student.current_sem}
->>>>>>> main
     return render(request, 'faculty_dashboard_proctor/student_details.html', context)
 
 def approve(request, pk):
@@ -74,11 +60,6 @@ def approve(request, pk):
     return redirect('faculty:student-details', pk=pk)
 
 def courseApprove(request, pk, course_id):
-<<<<<<< HEAD
-    course = Sem.objects.get(USN=pk, courseCode=course_id)
-    course.is_approved = True
-    course.save()
-=======
     print(type(course_id))
     if int(course_id) == 0:
         courses = Sem.objects.filter(USN=pk, is_active=True)
@@ -89,7 +70,6 @@ def courseApprove(request, pk, course_id):
         course = Sem.objects.get(USN=pk, courseCode=course_id)
         course.is_approved = True
         course.save()
->>>>>>> main
     return redirect('faculty:student-details', pk=pk)
 
 def courseReject(request, emails):
@@ -109,8 +89,6 @@ def courseReject(request, emails):
             )
     email.send()
     return redirect('faculty:student-details', pk=student.USN)
-<<<<<<< HEAD
-=======
 
 def addStudents(request):
     if request.method == "POST":
@@ -216,4 +194,3 @@ def addMarks(request):
                     sem.save()
         return redirect('faculty:dashboard')
     return render(request, 'faculty_dashboard_proctor/add_marks.html')
->>>>>>> main

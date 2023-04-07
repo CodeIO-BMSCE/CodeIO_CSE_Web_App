@@ -2,16 +2,113 @@
 {% load static %}
 
 {% block content %}
-<form method="post" style="margin-left: 20%;" action="{% url 'office:proctor-assign' %}" enctype="multipart/form-data">
-    <a href="{% url 'office:download-excel' %}" class="btn btn-primary">Download Excel</a>
-        {% csrf_token %}
 
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+    
+    th, td {
+        text-align: left;
+        padding: 8px;
+    }
+    
+    th {
+        background-color: #1b62bf;
+        color: white;
+    }
+    
+    tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+    
+    h3 {
+        margin-top: 20px;
+    }
+    
+    .note {
+        margin-top: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .note p {
+        margin-bottom: 10px;
+    }
+    
+    .btn {
+        background-color: #1b62bf;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        padding: 10px 20px;
+        text-decoration: none;
+        display: inline-block;
+        margin-top: 20px;
+    }
+    
+    .btn:hover {
+        background-color: #16579e;
+    }
+    
+    .position {
+        position: relative;
+    }
+    
+    .position input {
+        padding-left: 40px;
+    }
+    
+    .position .fa-upload {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-size: 20px;
+    }
+    
+</style>
+
+<h3 style="color:red;">Note:</h3>
+<div class="note">
+    <p>1: The excel sheet should follow the below format:</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Sl. No.</th>
+                <th>USN</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Proctor Name</th>
+                <th>Proctor Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td>
+                <td>1BM20CS000</td>
+                <td>xxx</td>
+                <td>xxx.cs20@bmsce.ac.in</td>
+                <td>yyy</td>
+                <td>yyy.cse@bmsce.ac.in</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>2: Download the excel sheet format from the given link below:</p>
+    <a href="{% url 'office:download-excel' %}" class="btn">Download Template</a>
+    <p style="color:red;">3: All the teachers (proctors) and students must be registered in the website  !IMPORTANT</p>
+</div>
+
+<form method="post" style="margin-left: 20%;" action="{% url 'office:proctor-assign' %}" enctype="multipart/form-data">
+    {% csrf_token %}
     <div class="position" style="margin-bottom: 1%; width: 80%;">
+        <i class="fa fa-upload"></i>
         <input class="form-control border" name='excel' type="file" id="exampleInputEmail1" aria-describedby="emailHelp">
         <br/>
         <div>
-            <button style="background-color: #1b62bf; border: none; width: 100%; border-radius: 5px; padding: 1%; color: white" type="submit">Upload</button>
+            <button class="btn" type="submit">Upload</button>
         </div>
     </div>
 </form>
+
 {% endblock content %}

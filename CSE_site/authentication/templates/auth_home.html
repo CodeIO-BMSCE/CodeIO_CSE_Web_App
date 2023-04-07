@@ -8,21 +8,14 @@
         <img src="{% static 'info_tab.png' %}"></img>
     </div>
     <div class="col padding wrap">
-<<<<<<< HEAD
-        <h3 class="caption">Welcome to Proctor Management</h3>
-=======
         <h3 class="caption">Welcome to CSE </h3>
->>>>>>> main
         <p class="subcaption">Please login or register to continue.</p>
         <div style="width: 50%;"><h5>{% include 'auth/messages.html'%}</h5></div>
         <div class="list-style">
             <ul>
-<<<<<<< HEAD
                 {% if olink %}
                 <li class="office"><a href="{% url olink %}">{{ olink_title }}</a></li>
                 {% endif %}
-=======
->>>>>>> main
                 <li class="student"><a href="{% url flink %}">{{ flink_title }}</a></li>
                 <li class="faculty"><a href="{% url slink %}">{{ slink_title }}</a></li>
             </ul>

@@ -42,11 +42,9 @@ INSTALLED_APPS = [
     'online_cie_allocator',
     'student_dashboard_proctor',
     'faculty_dashboard_proctor',
-<<<<<<< HEAD
-    'office_dashboard_proctor'
-=======
-    'Attendence_Management'
->>>>>>> main
+    'office_dashboard_proctor',
+    'Attendence_Management',
+    'import_export',
 ]
 
 MIDDLEWARE = [

@@ -30,6 +30,7 @@ def proctor_assign(request):
                 student = Student.objects.get(USN=std_usn)
                 proctor = Faculty.objects.get(email=proctor_email)
                 student.proctor_id = proctor
+                student.current_sem=1
                 student.save()
             except (Student.DoesNotExist, Faculty.DoesNotExist):
                 pass
@@ -43,8 +44,10 @@ def download_excel(request):
     ws = wb.active
     ws['A1'] = 'Sl. No.'
     ws['B1'] = 'USN'
-    ws['C1'] = 'Proctor-Name'
-    ws['D1'] = 'Proctor-Email-ID'
+    ws['C1'] = 'Name'
+    ws['D1'] = 'Email'
+    ws['E1'] = 'Proctor Name'
+    ws['F1'] = 'Proctor Email'
     filename = 'proctor_assignment_sheet.xlsx'
     response = HttpResponse(content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
     response['Content-Disposition'] = f'attachment; filename="{filename}"'
