@@ -14,6 +14,10 @@ from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.hashers import make_password
 from student_dashboard_proctor.models import Student as student
 from faculty_dashboard_proctor.models import Faculty as facs
+<<<<<<< HEAD
+=======
+from Attendence_Management.models import *
+>>>>>>> main
 
 from .models import User, Student, Faculty
 from .decorators import already_logged_in
@@ -31,19 +35,28 @@ def send_activation_email(user, request):
 
     send_mail(email_subject, email_body, settings.EMAIL_HOST_USER, [user.email])
 
+<<<<<<< HEAD
 @already_logged_in(url="landing_page")
+=======
+>>>>>>> main
 def auth_home(req):
     context = {
         "flink_title": "Login",
         "flink": "auth_login_home",
         "slink_title": "Register",
         "slink": "auth_register_home",
+<<<<<<< HEAD
 
+=======
+>>>>>>> main
     }
 
     return render(req, "auth_home.html", context)
 
+<<<<<<< HEAD
 @already_logged_in(url="landing_page")
+=======
+>>>>>>> main
 def register_home(req):
     context = {
         "flink_title": "Student Register",
@@ -53,19 +66,28 @@ def register_home(req):
     }
     return render(req, "auth_home.html", context)
 
+<<<<<<< HEAD
 @already_logged_in(url="landing_page")
+=======
+>>>>>>> main
 def login_home(req):
     context = {
         "flink_title": "Student Login",
         "flink": "auth_login_student",
         "slink_title": "Faculty Login",
         "slink": "auth_login_faculty",
+<<<<<<< HEAD
         "olink_title": "Office Login",
         "olink": "auth_login_office",
     }
     return render(req, "auth_home.html", context)
 
 @already_logged_in(url="landing_page")
+=======
+    }
+    return render(req, "auth_home.html", context)
+
+>>>>>>> main
 def register_student(req):
     context = {}
 
@@ -114,8 +136,11 @@ def register_student(req):
 
     return render(req, "register_student.html", context)
 
+<<<<<<< HEAD
 
 @already_logged_in(url="landing_page")
+=======
+>>>>>>> main
 def register_faculty(req):
     context = {}
     if req.method == 'POST':
@@ -216,6 +241,7 @@ def login_faculty(req):
 
     return render(req, "login_faculty.html", {})
 
+<<<<<<< HEAD
 @already_logged_in(url="landing_page")
 def login_office(req):
     context = {}
@@ -242,6 +268,8 @@ def login_office(req):
     return render(req, "login_office.html", {})
 
 
+=======
+>>>>>>> main
 def forgot_password(req):
     if req.method == "POST":
         email = req.POST['email']
@@ -318,7 +346,21 @@ def proctor_management(request):
         else:
             #edit the message
             return redirect('student:no_proctor')
+<<<<<<< HEAD
     elif(request.user.groups.filter(name="Faculty").exists()):
         return redirect('faculty:dashboard')
     else:
         return redirect('office:dashboard')
+=======
+    else:
+        return redirect('faculty:dashboard')
+    
+def atttendence_management(request):
+    if(request.user.groups.filter(name="Student").exists()):
+        return redirect('studentdashboard')
+    elif(request.user.groups.filter(name="Faculty").exists()):
+        # return render(request , "Attendence_Management/facultyCourses.html")
+        return redirect('facultyCourses')
+    else:
+        return redirect(reverse('auth_home'))
+>>>>>>> main

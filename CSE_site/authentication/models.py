@@ -33,7 +33,11 @@ class Student(User):
         verbose_name = "Student"
         verbose_name_plural = "Students"
 
+<<<<<<< HEAD
 class Faculty(User):
+=======
+class Faculty(User): 
+>>>>>>> main
     designation = models.CharField(max_length=255)
 
     def __str__(self):
@@ -42,6 +46,7 @@ class Faculty(User):
     class Meta:
         verbose_name = "Faculty"
         verbose_name_plural = "Faculties"
+<<<<<<< HEAD
 
 
 class Office(User):
@@ -54,3 +59,5 @@ class Office(User):
         verbose_name = "Office"
         verbose_name_plural = "Office"
 
+=======
+>>>>>>> main

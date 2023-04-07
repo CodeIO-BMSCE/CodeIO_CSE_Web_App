@@ -9,7 +9,11 @@ class Student(models.Model):
     name = models.CharField(max_length=200)
     email=models.EmailField()
     proctor_id=models.ForeignKey(Faculty, null=True, blank=True, on_delete=models.DO_NOTHING)
+<<<<<<< HEAD
     current_sem=models.DecimalField(max_digits=1, decimal_places=0, null=True, blank=True)
+=======
+    current_sem=models.IntegerField(null=True, blank=True)
+>>>>>>> main
     #personal details
     class Meta:
         ordering = ['name']
@@ -70,7 +74,11 @@ class CGPA(models.Model):
         ordering = ['USN']
     
 class courseRequest(models.Model):
+<<<<<<< HEAD
     faculty = models.OneToOneField(Faculty, on_delete=models.DO_NOTHING)
+=======
+    faculty = models.ForeignKey(Faculty, on_delete=models.DO_NOTHING)
+>>>>>>> main
     no_subjects = models.IntegerField(max_length=1)
     student_usn = models.CharField(max_length=10)
     sem = models.IntegerField()
@@ -87,9 +95,16 @@ class Sem(models.Model):
     attendance=models.FloatField(blank=True, null=True)
     CIE=models.FloatField(blank=True, null=True)
     SEE=models.FloatField(max_length=1, blank=True, null=True)
+<<<<<<< HEAD
     GradePoints=models.FloatField(blank=True, null=True)
     is_approved=models.BooleanField(default=False)
     is_marks_approved = models.BooleanField(default=False)
+=======
+    GradePoints=models.CharField(max_length=1, blank=True, null=True)
+    facultyHandling=models.ForeignKey(Faculty, null=True, blank=True, on_delete=models.DO_NOTHING)
+    is_approved=models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+>>>>>>> main
     
     # is_active = models.BooleanField(default=True)
     #courses to be cleared if any
