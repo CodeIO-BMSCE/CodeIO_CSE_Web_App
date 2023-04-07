@@ -13,4 +13,5 @@ urlpatterns = [
     path('/add-marks', views.addMarks, name='add-marks'),
     path('/send-register-form', views.sendCourse, name='send-register-form'),
     path('/student/alert/<str:emails>', views.sendAlertMail, name='student-alert'),
+    path('/send-email-parent', views.sendParents, name="send-parents")
 ]

@@ -3,10 +3,12 @@ from django.contrib.auth.decorators import login_required
 from .models import Faculty
 from student_dashboard_proctor.models import Student, StudentDetail, Sem, Fastrack, courseRequest
 from django.template.loader import render_to_string
-from django.core.mail import EmailMessage
+from django.core.mail import EmailMessage, EmailMultiAlternatives
 from django.conf import settings
 import openpyxl
 import pandas as pd
+from django.template.loader import get_template
+from django.template import Context
 
 # Create your views here.
 @login_required
@@ -113,7 +115,7 @@ def addStudents(request):
 def sendCourse(request):
     if request.method == "POST":
         faculty = Faculty.objects.get(email=request.user.email)
-        students = Student.objects.filter(proctor_id=faculty , current_sem=int(request.POST['sems'])-1)
+        students = Student.objects.filter(proctor_id=faculty, current_sem=request.POST['sems']-1)
         emails= []
         for stud in students:
             emails.append(stud.email)
@@ -194,3 +196,24 @@ def addMarks(request):
                     sem.save()
         return redirect('faculty:dashboard')
     return render(request, 'faculty_dashboard_proctor/add_marks.html')
+
+def sendParents(req):
+    faculty = Faculty.objects.get(email=req.user.email)
+    students = Student.objects.filter(proctor_id=faculty)
+    name = faculty.name
+    designation = faculty.designation
+    for student in students:
+        marks = Sem.objects.filter(USN=student.USN, sem=student.current_sem-1)
+        det = StudentDetail.objects.get(USN=student.USN)
+        par_email = det.father_email
+        subject = 'Marks Update'
+        message = 'Dear Parent, please find the marks of '+student.name+' for the sem '+str(student.current_sem-1)
+        content = {'message': message, 'name': name, 'designation': designation, 'courses': marks}
+        htmly     = get_template('faculty_dashboard_proctor/send_marks_email.html')
+        msg = EmailMultiAlternatives(subject, '', settings.EMAIL_HOST_USER, [par_email])
+        html_content = htmly.render(content)
+        msg.attach_alternative(html_content, "text/html")
+        msg.send()
+    return redirect('faculty:dashboard')
+        
+        
