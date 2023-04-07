@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<title>CSE AMS</title>
+        <!-- Font Awesome -->
+       <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"rel="stylesheet"/>
+        <!-- Google Fonts -->
+       <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet"/>
+        <!-- MDB -->
+       <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.css" rel="stylesheet"/>
+
+      <!-- MDB -->
+       <script type="text/javascript"src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.0.1/mdb.min.js"></script>
+       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,400,0,0" />
+	</head>
+  <style>
+     @import url('https://fonts.googleapis.com/css2?family=Urbanist&display=swap');
+    body{
+      font-family: 'Urbanist', sans-serif !important;
+    }
+    </style>
+	<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container">
+        <a class="navbar-brand me-2" href="">
+          <i class="fa-solid fa-bars"></i>
+        </a>
+
+        <div class="collapse navbar-collapse" id="navbarButtonsExample">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              {% if user.is_authenticated %}
+              <a class="nav-link" href="#">Hello , {{user.name}}</a>
+              {% else %}
+              <a class="nav-link" href="#">Hello</a>
+              {% endif %}
+            </li>
+          </ul>
+          
+          <div class="d-flex align-items-center">
+          <a href="{% url 'logout' %}">
+            <button type="button" class="btn btn-primary me-3">
+                LOGOUT
+            </button>
+          </a>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <section class="vh-100 mt-30" style="background-color: #eee;">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-lg-12 col-xl-11">
+            <div class="card text-black" style="border-radius: 25px;">
+              <div class="card-body p-md-5">
+                <div class="row justify-content-center">
+                {% if count == 0 %}
+                  <div style="height: 45px;font-size: 20px;" class="badge badge-warning">No student data found for the section</div>
+                {% else %}
+              <table class="table">
+                <thead>
+                  <tr>
+                    <!-- <th scope="col">Sl no</th> -->
+                    <th scope="col">USN</th>
+                    <th scope="col">Attended Classes({{totalClasses}})</th>
+                    <th scope="col">Percentage</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Update</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for usn , attended , per , stat in status %}
+                  <tr>
+                    <!-- <th scope="row">{{student.id}}</th> -->
+                    <td>{{usn}}</td>
+                    <td>{{attended}}</td>
+                    <td>{{per}}</td>
+                    <td>{{stat}}</td>
+                    <td>
+                    <button type="button" class="btn btn-primary btn-floating btn-md me-3" data-mdb-toggle="modal" data-mdb-target="#addAttendance">
+                        <i class="fa-solid fa-plus pe-none"></i>
+                    </button>
+                    <!-- Add Attendance Modal-->
+                    <div class="modal fade" id="addAttendance" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Add Attendance</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{% url 'studentList' %}?section={{section}}&courseTitle={{courseTitle}}&usn={{usn}}" method="POST">
+                                    {% csrf_token %}
+                                    <label for="date" class="col-form-label">Enter the date to add attendance</label>
+                                    <input type="date" class="form-control" id="date" name="date"/>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <input type="submit" name="submit" value="Save Changes" class="btn btn-primary">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-floating btn-md me-3" data-mdb-toggle="modal" data-mdb-target="#removeAttendance">
+                    <i class="fa-solid fa-minus pe-none"></i>
+                    </button>
+                    <!-- Remove Attendance Modal-->
+                    <div class="modal fade" id="removeAttendance" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Remove Attendance</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="{ url 'studentList'}" method="POST">
+                                {% csrf_token %}
+                                <label for="date" class="col-form-label">Enter the date to remove attendance</label>
+                                <input type="date" class="form-control" id="date" name="date"/>
+                            </form>
+                        </div>
+                            <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                                Close
+                            </button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+              {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  {% include 'Attendence_Management/footer.html' %}  
+	</body>
+</html>

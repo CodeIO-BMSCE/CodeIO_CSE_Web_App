@@ -33,11 +33,11 @@
           >
           <i class="fa-solid fa-bars"></i>
           </button>
-          {% comment %} <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="{% url 'facultyAttendance' %}">Academic year 2020-20</a></li>
-            <li><a class="dropdown-item" href="{% url 'facultyAttendance' %}">Academic year 2020-21</a></li>
-            <li><a class="dropdown-item" href="{% url 'facultyAttendance' %}">Academic year 2020-22</a></li>
-          </ul> {% endcomment %}
+          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <li><a class="dropdown-item" href="#">Academic year 2020-20</a></li>
+            <li><a class="dropdown-item" href="#">Academic year 2020-21</a></li>
+            <li><a class="dropdown-item" href="#">Academic year 2020-22</a></li>
+          </ul>
         </div>
     
         <div class="collapse navbar-collapse" id="navbarButtonsExample">
@@ -87,7 +87,7 @@
                     <input type="text" class="form-control" id="section" name="section" placeholder="C"/>
                   </div>
                   <div class="mb-3">
-                    <label for="classfile" class="col-form-label">Upload</label>
+                    <label for="classfile" class="col-form-label">Upload Student Data</label>
                     <input type="file" class="form-control" id="classfile" name="classfile" />
                     <label class="col-form-label">Use the format with columns as id , name , usn , email , section(Example : 3A)
                     </label>
@@ -115,6 +115,9 @@
     </nav>
     <div class="container">
         <div class="row">
+          {% if not mydata %}
+            <div style="height: 45px;font-size: 20px;" class="badge badge-warning">You haven't created any class yet</div>
+          {% else %}
           {% for dat in mydata %}
             <div class="col-sm-4 mt-4">
               <div class="card">
@@ -124,10 +127,12 @@
                   <p class="card-text">Semester : {{dat.semester}}</p>
                   <p class="card-text">Section : {{dat.section}}</p>
                   <a href="{% url 'facultyAttendance' %}?section={{dat.semester}}{{dat.section}}&courseTitle={{dat.courseTitle}}" class="btn btn-primary">Mark Attendance</a>
+                  <a href="{% url 'studentList' %}?section={{dat.semester}}{{dat.section}}&courseTitle={{dat.courseTitle}}" class="btn btn-primary">View Attendance</a>
                 </div>
               </div>
             </div>
-            {% endfor %}
+          {% endfor %}
+          {% endif %}
           </div>
     </div>
     {% include 'Attendence_Management/footer.html' %}  
