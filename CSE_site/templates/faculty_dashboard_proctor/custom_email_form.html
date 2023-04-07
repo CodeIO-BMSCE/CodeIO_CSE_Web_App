@@ -1,0 +1,16 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block content %}
+<form method="post" style="margin-left: 20%;" action="{% url 'faculty:custom-email' %}" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="position" style="margin-bottom: 1%; width: 80%;">
+        <label for="message" calss="text">Enter the message here</label>
+        <textarea class="form-control border" name='message' type="file" id="exampleInputEmail1" aria-describedby="emailHelp"></textarea>
+        <br />
+        <div>
+            <button style="background-color: #1b62bf; border: none; width: 100%; border-radius: 5px; padding: 1%; color: white" type="submit">Send</button>
+        </div>
+    </div>
+</form>
+{% endblock content %}

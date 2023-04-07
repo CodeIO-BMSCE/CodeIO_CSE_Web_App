@@ -52,6 +52,7 @@ def studentDetails(request, pk):
         marks = False
     fastrack = Fastrack.objects.filter(USN=pk, is_active=True)
     length = fastrack.count()
+    request.session['current_usn'] = pk
     context = {'s_info': s_info,'not_ap': not_ap, 'courses': courses, 'fasttrack': fastrack, 'fast_count': length, 'email': student.email, 'usn': student.USN, 'marks': marks, 'cour': cour, 'sem': student.current_sem}
     return render(request, 'faculty_dashboard_proctor/student_details.html', context)
 
@@ -216,4 +217,25 @@ def sendParents(req):
         msg.send()
     return redirect('faculty:dashboard')
         
-        
+def writeEmail(request):
+    usn = request.session.get('current_usn')
+    det = StudentDetail.objects.get(USN=usn)
+    faculty = Faculty.objects.get(email=request.user.email)
+    name = faculty.name
+    designation = faculty.designation
+    par_email = []
+    par_email.append(det.father_email)
+    par_email.append(det.mother_email)
+    subject = 'Updates from proctor'
+    message = request.POST['message']
+    content = {'message': message, 'name': name, 'designation': designation}
+    htmly     = get_template('faculty_dashboard_proctor/send_custom_email.html')
+    msg = EmailMultiAlternatives(subject, '', settings.EMAIL_HOST_USER, par_email)
+    html_content = htmly.render(content)
+    msg.attach_alternative(html_content, "text/html")
+    msg.send()
+    return redirect('faculty:dashboard')
+
+def customMail(request):
+    return render(request, 'faculty_dashboard_proctor/custom_email_form.html')
+    
