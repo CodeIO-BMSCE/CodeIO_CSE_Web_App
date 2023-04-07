@@ -4,3 +4,5 @@ six==1.16.0
 sqlparse==0.4.3
 tzdata==2023.3
 django-import-export==3.0.2
+openpyxl==3.0.10
+pandas==1.5.3
