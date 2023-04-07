@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login , logout
-# from .resources import StudentResource
-# from tablib import Dataset
+from .resources import StudentResource
+from tablib import Dataset
 from .models import *
 from django.urls import reverse
 
@@ -112,7 +112,7 @@ def facultyCourses(request):
         newcourse=FacultyCourse(courseTitle=courseTitle , courseCode=courseCode , semester=semester , section=section , faculty=faculty)
 
         if request.FILES.get('classfile'):
-            # student_resource = StudentResource()
+            student_resource = StudentResource()
             dataset = Dataset()
             new_students = request.FILES.get('classfile')
             if not new_students.name.endswith('xlsx'):
@@ -142,7 +142,7 @@ def facultyCourses(request):
 
 def facultyAttendance(request):
     if request.method == 'POST' and  request.FILES.get('classfile'):
-        # student_resource = StudentResource()
+        student_resource = StudentResource()
         dataset = Dataset()
         new_students = request.FILES.get('classfile')
         if not new_students.name.endswith('xlsx'):
