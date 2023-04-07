@@ -65,9 +65,15 @@ from django.urls import reverse
 
 def StudentDashboard(request):
     studentemail = request.user.email
-    section = Student.objects.filter(email=studentemail).values('section').first()['section']
-    courses = Course.objects.filter(className = section).values('courses').first()['courses'].strip("][").replace("'","").split(",")
-    facultyHandles = Course.objects.filter(className = section).values('facultyHandles').first()['facultyHandles'].strip("][").replace("'","").split(",")
+    section = Student.objects.filter(email=studentemail).values('section').first()['section'] if Student.objects.filter(email=studentemail).exists() else None
+    if section is None:
+        messages.info(request,"Wait until data gets added")
+        return render(request, '../templates/Attendence_Management/studentdashboard.html')
+    courses = Course.objects.filter(className = section).values('courses').first()['courses'].strip("][").replace("'","").split(",") if Course.objects.filter(className = section) else None
+    facultyHandles = Course.objects.filter(className = section).values('facultyHandles').first()['facultyHandles'].strip("][").replace("'","").split(",") if Course.objects.filter(className = section) else None
+    if courses is None or facultyHandles is None:
+        messages.info(request,"Wait until data gets added")
+        return render(request, '../templates/Attendence_Management/studentdashboard.html')
     flist = zip(courses , facultyHandles)
     return render(request, '../templates/Attendence_Management/studentdashboard.html',{'flist':flist})
 
@@ -165,6 +171,44 @@ def facultyAttendance(request):
     students = Student.objects.filter(section=section)
     count = students.count()
     return render(request,'../templates/Attendence_Management/facultyAttendance.html' ,{'students':students , 'count':count , 'section':section , 'courseTitle':courseTitle})
+
+def studentList(request):
+    courseTitle = request.GET.get('courseTitle')
+    section = request.GET.get('section')
+    if request.method == 'POST':
+        date = request.POST['date']
+        entry = Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle).values('attendance').first()['attendance']
+        entry = entry.strip("][").replace("'","").split(", ")
+        usn = request.GET.get('usn')
+        if usn in entry:
+            messages.info(request , f"Already marked present for the day {date}")
+            return redirect(reverse('facultyCourses'))
+        entry = entry.append(usn)
+        # attentry = Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle)
+        # attentry.attendance = entry
+        # attentry.save()
+    students = Student.objects.filter(section=section)
+    entries = Attendance.objects.filter(section=section , courseTitle=courseTitle)
+    totalClasses = entries.count()
+    entries = entries.values()
+    usn = []
+    attended = []
+    percentage = []
+    stat = []
+    for student in students:
+        attendedClasses = 0
+        for entry in entries:
+            attList = entry['attendance'].strip("][").replace("'","").split(", ")
+            if student.usn in attList:
+                attendedClasses += 1
+        usn.append(student.usn)
+        attended.append(attendedClasses)
+        per = 0 if attendedClasses==0 else (attendedClasses/totalClasses)*100
+        percentage.append(per)
+        s = 'Eligible' if per >= 85 else 'Not Eligible'
+        stat.append(s)
+    status = zip(usn , attended  , percentage , stat)
+    return render(request, '../templates/Attendence_Management/studentList.html', {'status':status , 'totalClasses':totalClasses , 'section':section , 'courseTitle':courseTitle})
 
 def Logout(request):
     return redirect('auth_logout')
