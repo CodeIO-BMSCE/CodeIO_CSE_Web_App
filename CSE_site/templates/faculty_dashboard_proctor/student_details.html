@@ -199,7 +199,7 @@
               </div>
           </td>
           {% endif %}
-          
+
         </tr>
         {% endfor %}
       </tbody>
@@ -233,16 +233,41 @@
           <th scope="col">Course Name</th>
           <th scope="col">Credits</th>
           <th scope="col">Sem</th>
+          <th scope="col">Attempt Number</th>
         </tr>
       </thead>
       <tbody>
-        {% for course in courses %}
+        {% for course in fastrack %}
         <tr>
           <td>{{forloop.counter}}</td>
-          <td>{{fasttrack.courseCode}}</td>
-          <td>{{fasttrack.courseName}}</td>
-          <td>{{fasttrack.credit}}</td>
-          <td>{{fasttrack.sem}}</td>
+          <td>{{course.courseCode}}</td>
+          <td>{{course.courseName}}</td>
+          <td>{{course.credit}}</td>
+          <td>{{course.sem}}</td>
+          <td>{{course.attemptNumber}}</td>
+          {% if not course.is_approved %}
+          <td>
+            <button style="padding: 5%; margin-left: 10%; color: white; border: none; background-color: #009933; border-radius: 10px;">
+                <a
+                style="text-decoration: none; color: white;"
+                href="{% url 'faculty:student-fcourse-approve' s_info.USN course.courseCode %}"
+                ><span>Approve</span></a
+              >
+            </button>
+            
+          </td>
+          <td>
+            <div style="padding: 2%;">
+                <button style="padding: 7%; margin-left: 10%; color: white; border: none; background-color: #BF0404; border-radius: 10px;">
+                    <a
+                    style="text-decoration: none; color: white;"
+                    href="{% url 'faculty:student-fcourse-reject' email %}"
+                    ><span>Reject</span></a
+                  >
+                  </button>
+              </div>
+          </td>
+          {% endif %}
         </tr>
         {% endfor %}
       </tbody>
