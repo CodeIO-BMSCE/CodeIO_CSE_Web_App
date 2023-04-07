@@ -103,7 +103,7 @@ class Fastrack(models.Model):
     courseName=models.TextField()
     courseCode=models.TextField() #can be changed to charfield
     credit=models.TextField()
-    registration=models.TextField() #regular or re registered
+    registration=models.TextField(blank=True,null=True) #regular or re registered
     attemptNumber=models.FloatField(blank=True, null=True)
     attendance=models.FloatField(blank=True, null=True)
     CIE=models.FloatField(blank=True, null=True)
@@ -114,3 +114,8 @@ class Fastrack(models.Model):
     #courses to be cleared if any
     #proctor remarks
     
+class FastrackCourseRequest(models.Model):
+    # faculty = models.ForeignKey(Faculty, on_delete=models.DO_NOTHING)
+    no_subjects = models.IntegerField(max_length=1)
+    student_usn = models.CharField(max_length=10)
+    sem = models.IntegerField()
