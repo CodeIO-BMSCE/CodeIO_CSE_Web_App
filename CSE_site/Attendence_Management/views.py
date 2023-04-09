@@ -175,18 +175,33 @@ def facultyAttendance(request):
 def studentList(request):
     courseTitle = request.GET.get('courseTitle')
     section = request.GET.get('section')
-    if request.method == 'POST':
+    action = request.GET.get('action')
+    if request.method == 'POST' and action=='add':
         date = request.POST['date']
-        entry = Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle).values('attendance').first()['attendance']
+        entry = Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle).values('attendance').first()['attendance'] if Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle).exists() else None
+        if entry is None:
+            messages.info(request , f"No attendance has been recorded the day {date}")
+            return redirect(reverse('facultyCourses'))
         entry = entry.strip("][").replace("'","").split(", ")
         usn = request.GET.get('usn')
         if usn in entry:
             messages.info(request , f"Already marked present for the day {date}")
             return redirect(reverse('facultyCourses'))
-        entry = entry.append(usn)
-        # attentry = Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle)
-        # attentry.attendance = entry
-        # attentry.save()
+        entry.append(usn)
+        Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle).update(attendance=entry)
+    if request.method == 'POST' and action=='remove':
+        date = request.POST['date']
+        entry = Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle).values('attendance').first()['attendance'] if Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle).exists() else None
+        if entry is None:
+            messages.info(request , f"No attendance has been recorded the day {date}")
+            return redirect(reverse('facultyCourses'))
+        entry = entry.strip("][").replace("'","").split(", ")
+        usn = request.GET.get('usn')
+        if not usn in entry:
+            messages.info(request , f"Marked absent for the day {date}")
+            return redirect(reverse('facultyCourses'))
+        entry.remove(usn)
+        Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle).update(attendance=entry)
     students = Student.objects.filter(section=section)
     entries = Attendance.objects.filter(section=section , courseTitle=courseTitle)
     totalClasses = entries.count()
