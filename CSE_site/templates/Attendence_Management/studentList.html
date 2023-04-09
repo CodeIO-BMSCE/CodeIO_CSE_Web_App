@@ -38,6 +38,10 @@
             </li>
           </ul>
           
+          {% for message in messages %}
+          <div style="height: 35px;font-size: 20px;" class="badge badge-success mb-2">{{message}}</div>
+          {% endfor %}
+
           <div class="d-flex align-items-center">
           <a href="{% url 'logout' %}">
             <button type="button" class="btn btn-primary me-3">
@@ -72,17 +76,16 @@
                 <tbody>
                   {% for usn , attended , per , stat in status %}
                   <tr>
-                    <!-- <th scope="row">{{student.id}}</th> -->
                     <td>{{usn}}</td>
                     <td>{{attended}}</td>
                     <td>{{per}}</td>
                     <td>{{stat}}</td>
                     <td>
-                    <button type="button" class="btn btn-primary btn-floating btn-md me-3" data-mdb-toggle="modal" data-mdb-target="#addAttendance">
+                    <button type="button" class="btn btn-primary btn-floating btn-md me-3" data-mdb-toggle="modal" data-mdb-target="#addAttendance-{{forloop.counter}}">
                         <i class="fa-solid fa-plus pe-none"></i>
                     </button>
                     <!-- Add Attendance Modal-->
-                    <div class="modal fade" id="addAttendance" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    <div class="modal fade" id="addAttendance-{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog">
                         <div class="modal-content">
@@ -91,7 +94,7 @@
                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form action="{% url 'studentList' %}?section={{section}}&courseTitle={{courseTitle}}&usn={{usn}}" method="POST">
+                                <form action="{% url 'studentList' %}?action=add&section={{section}}&courseTitle={{courseTitle}}&usn={{usn}}" method="POST">
                                     {% csrf_token %}
                                     <label for="date" class="col-form-label">Enter the date to add attendance</label>
                                     <input type="date" class="form-control" id="date" name="date"/>
@@ -106,30 +109,30 @@
                         </div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-primary btn-floating btn-md me-3" data-mdb-toggle="modal" data-mdb-target="#removeAttendance">
+                    <button type="button" class="btn btn-primary btn-floating btn-md me-3" data-mdb-toggle="modal" data-mdb-target="#removeAttendance-{{forloop.counter}}">
                     <i class="fa-solid fa-minus pe-none"></i>
                     </button>
                     <!-- Remove Attendance Modal-->
-                    <div class="modal fade" id="removeAttendance" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    <div class="modal fade" id="removeAttendance-{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel"
                         aria-hidden="true">
                         <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
                             <h5 class="modal-title" id="exampleModalLabel">Remove Attendance</h5>
                             <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            <form action="{ url 'studentList'}" method="POST">
-                                {% csrf_token %}
-                                <label for="date" class="col-form-label">Enter the date to remove attendance</label>
-                                <input type="date" class="form-control" id="date" name="date"/>
-                            </form>
-                        </div>
-                            <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
-                                Close
-                            </button>
-                            <button type="button" class="btn btn-primary">Save changes</button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{% url 'studentList' %}?action=remove&section={{section}}&courseTitle={{courseTitle}}&usn={{usn}}" method="POST">
+                                    {% csrf_token %}
+                                    <label for="date" class="col-form-label">Enter the date to remove attendance</label>
+                                    <input type="date" class="form-control" id="date" name="date"/>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <input type="submit" name="submit" value="Save Changes" class="btn btn-primary">
+                                    </div>
+                                </form>
                             </div>
                         </div>
                         </div>
