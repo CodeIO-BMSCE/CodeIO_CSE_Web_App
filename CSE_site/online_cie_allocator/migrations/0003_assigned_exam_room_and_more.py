@@ -6,21 +6,13 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    initial = True
-
     dependencies = [
         ('authentication', '0004_office_alter_faculty_options'),
         ('CSE_site', '0002_alter_course_code_alter_course_title_and_more'),
+        ('online_cie_allocator', '0002_delete_assigned_exam_room'),
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='Room',
-            fields=[
-                ('roomName', models.CharField(max_length=255, primary_key=True, serialize=False)),
-                ('num_seats', models.IntegerField()),
-            ],
-        ),
         migrations.CreateModel(
             name='Assigned_Exam_Room',
             fields=[

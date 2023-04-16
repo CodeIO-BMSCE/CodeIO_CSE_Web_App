@@ -110,7 +110,7 @@ def register_student(req):
         details.save()
         messages.add_message(req, messages.SUCCESS, 'We sent you an email to verify your account')
 
-        send_activation_email(stud, req)
+        # send_activation_email(stud, req)
         return redirect(reverse('auth_login_student'))
 
     return render(req, "register_student.html", context)
@@ -129,9 +129,9 @@ def register_faculty(req):
             messages.add_message(req, messages.ERROR,'Enter your BMSCE Mail')
             return render(req, 'register_faculty.html', context, status=409)
         
-        if not validatePassword(password):
-            messages.add_message(req, messages.ERROR,' Password must contain minimum 8 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character')
-            return render(req, 'register_faculty.html', context,  status=409)
+        # if not validatePassword(password):
+        #     messages.add_message(req, messages.ERROR,' Password must contain minimum 8 and maximum 16 characters, at least one uppercase letter, one lowercase letter, one number and one special character')
+        #     return render(req, 'register_faculty.html', context,  status=409)
 
         if password != confirm_password:
             messages.add_message(req, messages.ERROR,'Password mismatch')
@@ -156,7 +156,7 @@ def register_faculty(req):
         details.save()
         messages.add_message(req, messages.SUCCESS, 'We sent you an email to verify your account')
 
-        send_activation_email(fac, req)
+        # send_activation_email(fac, req)
         return redirect(reverse('auth_login_faculty'))
 
     return render(req, "register_faculty.html", context)
@@ -175,9 +175,9 @@ def login_student(req):
                 messages.add_message(req,messages.ERROR, "Invalid credentials, try again")
                 return render(req, 'login_student.html', context,  status=409)
         
-        if not user.is_email_verified:
-                messages.add_message(req, messages.ERROR, "Student Email Not Verified! Check your Inbox")
-                return render(req, 'login_student.html', context,  status=409)
+        # if not user.is_email_verified:
+        #         messages.add_message(req, messages.ERROR, "Student Email Not Verified! Check your Inbox")
+        #         return render(req, 'login_student.html', context,  status=409)
         
         if not user.groups.filter(name="Student"):
             messages.add_message(req,messages.ERROR,"Invalid Student credentials, try again")
@@ -204,9 +204,9 @@ def login_faculty(req):
                 messages.add_message(req,messages.ERROR, "Invalid credentials, try again")
                 return render(req, 'login_faculty.html', context,  status=409)
         
-        if not user.is_email_verified:
-                messages.add_message(req, messages.ERROR, "Faculty Email Not Verified! Check your Inbox")
-                return render(req, 'login_faculty.html', context,  status=409)
+        # if not user.is_email_verified:
+        #         messages.add_message(req, messages.ERROR, "Faculty Email Not Verified! Check your Inbox")
+        #         return render(req, 'login_faculty.html', context,  status=409)
         
         if not user.groups.filter(name="Faculty"):
             messages.add_message(req,messages.ERROR,"Invalid Faculty credentials, try again")
