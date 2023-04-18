@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+{% if user.is_authenticated %}
+Hi {{ user.username }}!
+<p>
+    <a href="{% url 'logout' %}">Log Out</a>
+</p>
+{% else %}
+<p>
+    You are not logged in.
+</p>
+{% endif %}
+<a href="{% url 'category' 'Site-News!' %}">
+    Site News!
+</a><br>
+<a href = "#">
+    Site Suggestions and Tech Issues
+</a><br>
+<a href="{% url 'thread_list' %}">All</a><br>
+<a href="{% url 'category' 'General' %}">General</a><br>
+<a href="{% url 'category' cats="Web-Development" %}">Web Development</a><br>
+<a href="{% url 'category' 'App-Development' %}">App Development</a><br>
+<a href="{% url 'category' 'Coding' %}">Coding</a><br>
+<a href="{% url 'livechat' %}">Live Chat</a><br>
+{% endblock content %}

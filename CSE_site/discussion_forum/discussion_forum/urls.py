@@ -1,4 +1,4 @@
-"""CSE_site URL Configuration
+"""django_project URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/4.1/topics/http/urls/
@@ -14,17 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from . import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('dashboard/', views.landing_page, name='landing_page'),
-    path('cie_allocator/', include('online_cie_allocator.urls')),
-    path('', include('authentication.urls')),
-    path('notes_and_qp_mgmt/', include('notes_and_qp_mgmt.urls')),
-    path('student/', include('student_dashboard_proctor.urls')),
-    path('discussion/', include('discussion_forum.discussion_forum.urls'))
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    path("accounts/", include("django.contrib.auth.urls")),
+    path("livechat/", include("discussion_forum.chats.urls")),
+    path("threads/", include("discussion_forum.threads.urls")),
+    path("inbox/", include("discussion_forum.notis.urls")),
+    path("direct_message/", include("discussion_forum.direct_messages.urls")),
+    path("", include("discussion_forum.mainpage.urls")),
+    
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

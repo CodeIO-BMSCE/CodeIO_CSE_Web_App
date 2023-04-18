@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>You are deleting your thread: {{ object.title }}</h2><br>
+<form action="" method="post">
+    {% csrf_token %}
+    <p>Are you sure???</p>
+    <button class="btn btn-danger">Confirm</button>
+</form>
+{% endblock content %}
