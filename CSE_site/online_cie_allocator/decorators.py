@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, HttpResponse
 from django.urls import reverse
 
-# currently works only if a user belongs to at most one group
+# currently works only if a user belongs to at most one group, TODO: make it general
 def allowed_users(allowed_roles=[]):
     def decorator(in_func):
         def wrapper_func(req, *args, **kwargs):

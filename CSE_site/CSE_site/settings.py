@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'CSE_site',
     'authentication',
     'online_cie_allocator',
     'student_dashboard_proctor',
