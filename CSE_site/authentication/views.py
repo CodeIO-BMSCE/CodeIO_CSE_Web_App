@@ -15,8 +15,10 @@ from django.contrib.auth.hashers import make_password
 from student_dashboard_proctor.models import Student as student
 from faculty_dashboard_proctor.models import Faculty as facs
 from Attendence_Management.models import *
+import re
 
 from .models import User, Student, Faculty
+# from CSE_site.models import Student_Batch
 from .decorators import already_logged_in
 from .utils import token_generator
 
@@ -39,7 +41,6 @@ def auth_home(req):
         "flink": "auth_login_home",
         "slink_title": "Register",
         "slink": "auth_register_home",
-
     }
 
     return render(req, "auth_home.html", context)
@@ -98,7 +99,14 @@ def register_student(req):
         except ObjectDoesNotExist:
             group = Group.objects.create(name="Student")  
 
-        stud = Student.objects.create_user(email=email, password=password)
+        # graduate_year = int(re.search("\d.$", email[email.find('.')+1 : email.find('@')]).group()) + 2004
+        # try:
+        #     stud_batch = Student_Batch.objects.get(graduate_year=graduate_year) #  this will break after 2099. depends on how bmsce gives email addresses
+        # except ObjectDoesNotExist:
+        #     return HttpResponse("Batch doesn't exist!")
+        # stud = Student.objects.create_user(email=email, password=password, batch=stud_batch)
+        join_year = int(re.search("\d.$", email[email.find('.')+1 : email.find('@')]).group()) + 2000
+        stud = Student.objects.create_user(email=email, password=password, join_year=join_year)
         stud.name = name
         stud.usn = usn
         stud.groups.add(group)

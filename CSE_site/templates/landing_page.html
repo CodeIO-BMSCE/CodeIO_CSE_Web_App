@@ -2,6 +2,9 @@
 {% load static %}
 
 {% block content %}
+<div class="d-flex flex-row justify-content-center">
+  <p class="fs-3">Welcome {{ username }}</p>
+</div>
 <div clas="container-lg" style="padding: 5%;">
     <div class="row" style="width:100%;">
         <div class="col-md-4">
@@ -30,15 +33,15 @@
                   <a
                     style="text-decoration: none; color: white;"
                     href="#"
-                    ><span>Add your project link here</span></a
-                  >
+                    ><span>Add your project link here</span>
+                  </a>
                 </button>
               </div>
         </div>
     </div><br>
     <div class="row" style="width:100%;">
         <div class="col-md-2"><a href="#"></a></div>
-        <div class="col-md-4"><center><div style=" ">
+        <div class="col-md-4"><center><div>
                 <button style="padding: 5%; margin-left: 10%; color: white; border: none; box-shadow: 2px 2px 17px -3px rgba(113,151,173,1); background-color: #5697BF; border-radius: 10px; margin-bottom: 2%;">
                   <a
                     style="text-decoration: none; color: white;"
@@ -51,7 +54,7 @@
                 <button style="padding: 5%; margin-left: 10%; color: white; border: none; box-shadow: 2px 2px 17px -3px rgba(168,67,67,1); background-color: #BF0404; border-radius: 10px; margin-bottom: 2%;">
                   <a
                     style="text-decoration: none; color: white;"
-                    href="{% url 'cie_allocator_student_view' %}"
+                    href="{% url 'exam_allocator' %}"
                     ><span>Exam Room Allocator</span></a
                   >
                 </button>

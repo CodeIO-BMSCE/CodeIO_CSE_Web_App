@@ -2,12 +2,12 @@
 {% load static %}
 
 {% block content %}
-<form action="{% url 'cie_allocator_student_view' %}" method="post">
+<form action="{% url 'exam_allocator_student_dashboard' %}" method="post">
     {% csrf_token %}
     <label for="exams">Choose a exam:</label>
 
     <!-- TODO: make it dynamic -->
-    <select name="exams" id="exams">
+    <select name="exams">
         <option value="CIE 1">CIE 1</option>
         <option value="CIE 2">CIE 2</option>
         <option value="CIE 3">CIE 3</option>

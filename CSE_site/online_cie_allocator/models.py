@@ -14,10 +14,11 @@ class Assigned_Exam_Room(models.Model):
     stud_id = models.ForeignKey(Student, on_delete=models.PROTECT)
     course_id = models.ForeignKey(Course, on_delete=models.PROTECT)
     exam_id = models.ForeignKey(Exam, on_delete=models.PROTECT)
-    room_name = models.ForeignKey(Room, on_delete=models.PROTECT)
+    # room_name = models.ForeignKey(Room, on_delete=models.PROTECT)
+    room_number = models.IntegerField(null=True) # TODO: make null: False
 
     def __str__(self):
-        return "<Assigned " + self.stud_id.usn + " to room " + self.room_name.roomName + " for " + self.course_id.code + " " + self.exam_id.title + ">"
+        return "<Assigned " + self.stud_id.usn + " to room " + str(self.room_number) + " for " + self.course_id.code + " " + self.exam_id.title + ">"
     
     class Meta:
         ordering = ['stud_id', 'exam_id']

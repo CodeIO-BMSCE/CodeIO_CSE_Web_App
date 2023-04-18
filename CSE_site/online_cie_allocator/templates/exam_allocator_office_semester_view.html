@@ -1,0 +1,30 @@
+{% extends 'cie_allocator_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<form action="{% url 'exam_allocator_office_download_template' sem %}" method="post">
+    {% csrf_token %}
+    <p class="fs-2">Download Template</p>
+    <button type="submit">Download</button>
+</form>
+
+<form action="{% url 'exam_allocator_office_upload' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <p class="fs-2">Upload</p>
+
+    <!-- TODO: make it dynamic -->
+    <label for="exam">Choose a exam:</label>
+    <select name="exam">
+        <option value="CIE 1">CIE 1</option>
+        <option value="CIE 2">CIE 2</option>
+        <option value="CIE 3">CIE 3</option>
+    </select>
+    <br>
+
+    <input type="file" name="excel_file">
+    <br>
+    <button type="submit">Upload</button>
+</form>
+
+{% endblock content %}

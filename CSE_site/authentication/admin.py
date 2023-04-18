@@ -1,6 +1,6 @@
 from django.contrib import admin
 # from .models import User
-from .models import Student, Faculty,Office
+from .models import Student, Faculty, Office
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ('name','email')

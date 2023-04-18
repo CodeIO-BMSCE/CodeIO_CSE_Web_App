@@ -4,6 +4,8 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from .managers import CustomUserManager
+# from CSE_site.models import Student_Batch
+from CSE_site.models import Course
 
 class User(AbstractUser):
     username = None
@@ -24,7 +26,11 @@ class User(AbstractUser):
         return self.email.split('@')[0]
 
 class Student(User):
-    usn = models.CharField(max_length=255)
+    usn = models.CharField(max_length=255, unique=True)
+    join_year = models.IntegerField()
+    current_sem = models.IntegerField(null=True)
+    courses = models.ManyToManyField(Course)
+    # batch = models.ForeignKey(Student_Batch, on_delete=models.PROTECT)
 
     def __str__(self):
         return "<Student " + self.usn + ">"
