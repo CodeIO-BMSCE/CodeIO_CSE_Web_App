@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock title %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<h1 style="text-align: center;margin-top: 5%;font-weight: 700;">Welcome, {{ user.username}}</h1>
+    {% if user.profile.id %}
+    {% else %}
+        <h5 style="text-align: center;margin-top: 5%;font-weight: 700;">Please create user profile to get access to messages and alerts</h5>
+    {% endif %}
+{% else %}
+<h5 style="text-align: center;margin-top: 5%;font-weight: 700;">Please sign up or log in to get access to create new threads,messages and alerts!</h5>
+{% endif %}
+<div class="row m-2">
+    <div class="col-md-4 g-3">
+        <a href="{% url 'thread_list' %}" id="homelink" class="btn bg-primary"><span>All</span></a><br>
+        <a href="{% url 'category' 'App-Development' %}" id="homelink" class="btn bg-primary">App Development</a><br>
+    </div>
+    <div class="col-md-4 g-3">
+        <a href="{% url 'category' 'General' %}" id="homelink" class="btn bg-primary">General</a><br>
+        <a href="{% url 'category' 'Coding' %}" id="homelink" class="btn bg-primary">Coding</a><br>
+    </div>
+    <div class="col-md-4 g-3">
+        <a href="{% url 'category' cats="Web-Development" %}" id="homelink" class="btn bg-primary">Web Development</a><br>
+        <a href="{% url 'category' 'Site-News!' %}" id="homelink" class="btn bg-primary">Site News!</a><br>
+    </div>
+</div>
+{% endblock content %}

@@ -47,13 +47,6 @@ INSTALLED_APPS = [
     'Attendence_Management',
     'import_export',
     'notes_and_qp_mgmt',
-    # 'discussion_forum.channels.apps.ChannelsConfig',
-    # 'discussion_forum.accounts.apps.AccountsConfig', # app for accounts 
-    'discussion_forum.chats.apps.ChatsConfig', # the app for chatting
-    'discussion_forum.mainpage.apps.MainpageConfig', # the main_page
-    'discussion_forum.threads.apps.ThreadsConfig', # app for threads
-    "discussion_forum.notis.apps.NotisConfig",
-    "discussion_forum.direct_messages.apps.DirectMessagesConfig",
 ]
 
 MIDDLEWARE = [
