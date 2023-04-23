@@ -1,0 +1,24 @@
+{% extends 'cie_allocator_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<p class="fs-1">Download Template</p>
+<a href="{% url 'exam_allocator_office_assign_invigilators_download_template' %}">Download</a>
+
+<p class="fs-1">Upload</p>
+<form action="{% url 'exam_allocator_office_assign_invigilators_upload' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="date">Select invigilation date:</label>
+    <input type="date" name="date">
+    <br>
+    <label for="time">Select invigilation time:</label>
+    <input type="time" name="time">
+    <br>
+    <input type="file" name="excel_file">
+    <br>
+    <button type="submit">Send Email/Notification</button>
+</form>
+
+{% endblock content %}

@@ -3,10 +3,11 @@ from . import views
 
 urlpatterns = [
     path('', views.exam_allocator, name="exam_allocator"),
-    path('student/', views.student_dashboard, name='exam_allocator_student_dashboard'),
-    path('office/', views.office_dashboard, name='exam_allocator_office_dashboard'),
-    path('office/semester/<int:sem>', views.office_semester_view, name="exam_allocator_office_semester_view"),
-    path('office/download_template/<int:semester>', views.office_download_template, name="exam_allocator_office_download_template"),
-    path('office/upload', views.office_upload, name="exam_allocator_office_upload"),
-    path('faculty/', views.faculty_view, name="exam_allocator_faculty_view"),
+    path('office/', views.office_dashboard_view, name='exam_allocator_office_dashboard'),
+    path('office/assign/students/', views.office_assign_students_view, name='exam_allocator_office_assign_students'),
+    path('office/assign/students/download_template/<str:course_code>/', views.office_assign_students_download_template, name='exam_allocator_office_assign_students_download_template'),
+    path('office/assign/students/upload/', views.office_assign_students_upload, name='exam_allocator_office_assign_students_upload'),
+    path('office/assign/invigilators/', views.office_assign_invigilators_view, name='exam_allocator_office_assign_invigilators'),
+    path('office/assign/invigilators/download_template/', views.office_assign_invigilators_download_template, name='exam_allocator_office_assign_invigilators_download_template'),
+    path('office/assign/invigilators/upload/', views.office_assign_invigilators_upload, name='exam_allocator_office_assign_invigilators_upload'),
 ]
