@@ -29,7 +29,7 @@
 {% endif %}
 
 <p class="fs-1">Upload</p>
-<form action="{% url 'exam_allocator_office_assign_students' %}" method="post" enctype="multipart/form-data">
+<form action="{% url 'exam_allocator_office_assign_students_upload' %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
     <label for="exam">Choose a exam:</label>
