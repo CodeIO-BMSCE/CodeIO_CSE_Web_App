@@ -3,8 +3,12 @@
 
 {% block content %}
 
-<p class="fs-1">Assign Exam Room</p>
-<a href="{% url 'exam_allocator_office_assign_students' %}">Students</a>
-<a href="{% url 'exam_allocator_office_assign_invigilators' %}">Invigilators</a>
+<p class="fs-1 d-flex justify-content-center align-items-center">Assign Exam Room</p>
+<a href="{% url 'exam_allocator_office_assign_students' %}" class="fs-3 d-flex justify-content-center align-items-center p-3">
+    <button type="button" class="btn btn-outline-success fs-3 ">Students</button>
+</a>
+<a href="{% url 'exam_allocator_office_assign_invigilators' %} "class="fs-3 d-flex justify-content-center align-items-center">
+    <button type="button" class="btn btn-outline-success fs-3 ">Invigilators </button>
+</a>
 
 {% endblock content %}
