@@ -9,8 +9,6 @@ class Attendance(models.Model):
     section = models.CharField(max_length=2 , blank=False , null=True)
     courseTitle = models.CharField(max_length=25 , blank=False , null=True)
         
-    def __str__(self):
-        return self.date
 
     
 class FacultyCourse(models.Model):
@@ -19,6 +17,7 @@ class FacultyCourse(models.Model):
     semester = models.CharField(max_length=1)
     section = models.CharField(max_length=1)
     faculty = models.CharField(max_length=30)
+    academicYear = models.CharField(max_length=7)
         
     def __str__(self):
         return self.courseTitle

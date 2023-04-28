@@ -34,12 +34,12 @@
           <i class="fa-solid fa-bars"></i>
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-            <li><a class="dropdown-item" href="#">Academic year 2020-20</a></li>
-            <li><a class="dropdown-item" href="#">Academic year 2020-21</a></li>
-            <li><a class="dropdown-item" href="#">Academic year 2020-22</a></li>
+            <li><a class="dropdown-item" href="{% url 'academicyear' "2022-23" %}">Academic year 2022-23</a></li>
+            <li><a class="dropdown-item" href="{% url 'academicyear' "2021-22" %}">Academic year 2021-22</a></li>
+            <li><a class="dropdown-item" href="{% url 'academicyear' "2020-21" %}">Academic year 2020-21</a></li>
           </ul>
         </div>
-    
+        
         <div class="collapse navbar-collapse" id="navbarButtonsExample">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
@@ -87,6 +87,10 @@
                     <input type="text" class="form-control" id="section" name="section" placeholder="C"/>
                   </div>
                   <div class="mb-3">
+                    <label for="academicYear" class="col-form-label">Academic Year</label>
+                    <input type="text" class="form-control" id="academicYear" name="academicYear" placeholder="2020-21"/>
+                  </div>
+                  <div class="mb-3">
                     <label for="classfile" class="col-form-label">Upload Student Data</label>
                     <input type="file" class="form-control" id="classfile" name="classfile" />
                     <label class="col-form-label">Use the format with columns as id , name , usn , email , section(Example : 3A)
@@ -104,11 +108,16 @@
             </div>
           </div>
       </div>
+      <a href="{% url 'landing_page' %}">
+        <button type="button" class="btn btn-primary me-3">
+         HOME
+        </button>
+        </a>
           <a href="{% url 'logout' %}">
-          <button type="button" class="btn btn-primary me-3">
-            LOGOUT
-          </button>
-          </a>
+            <button type="button" class="btn btn-primary me-3">
+              LOGOUT
+            </button>
+            </a>
           </div>
         </div>
       </div>
@@ -122,12 +131,105 @@
             <div class="col-sm-4 mt-4">
               <div class="card">
                 <div class="card-body">
-                  <h5 class="card-title">{{dat.courseTitle}}</h5>
-                  <p class="card-text">Course Code : {{dat.courseCode}}</p>
+                  <h5 class="card-title d-flex justify-content-between">{{dat.courseTitle}}
+
+                    {% comment %} dropdown {% endcomment %}
+                  <div class="dropdown ">
+                    <a
+                      class="dropdown-toggle hidden-arrow"
+                      type="button"
+                      id="dropdownMenuicon"
+                      data-mdb-toggle="dropdown"
+                      aria-expanded="false" 
+                    >
+                      <i class="fas fa-ellipsis-v fa-lg text-dark pull-right "></i>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuicon">
+                      <li><button class="dropdown-item"  data-mdb-toggle="modal" data-mdb-target="#editCourse-{{forloop.counter}}">
+                        <i class="fas fa-edit pe-2"></i>Edit Course Details
+                      </button></li>
+                      <li><button class="dropdown-item" data-mdb-toggle="modal" data-mdb-target="#deleteCourse-{{forloop.counter}}">
+                        <i class="fas fa-minus pe-2"></i>Remove Course
+                      </button></li>
+                    </ul>
+                  </div>
+                  
+                  {% comment %} Edit course {% endcomment %}
+                  <div class="modal fade" id="editCourse-{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLabel">Edit Course</h5>
+                          <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form action="{% url 'updateCourse' dat.courseCode dat.section %}"  method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                              <label for="course-title" class="col-form-label">Course Title</label>
+                              <input type="text" class="form-control" id="course-title" name="courseTitle" value="{{dat.courseTitle}}"/>
+                            </div>
+                            <div class="mb-3">
+                              <label for="course-code" class="col-form-label">Course Code</label>
+                              <input type="text" class="form-control" id="course-code" name="courseCode" value="{{dat.courseCode}}"/>
+                            </div>
+                            <div class="mb-3">
+                              <label for="semester" class="col-form-label">Semester</label>
+                              <input type="text" class="form-control" id="semester" name="semester" value="{{dat.semester}}"/>
+                            </div>
+                            <div class="mb-3">
+                              <label for="section" class="col-form-label">Section</label>
+                              <input type="text" class="form-control" id="section" name="section" value="{{dat.section}}"/>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                                Close
+                              </button>
+                              <input type="submit" name="submit" class="btn btn-primary">
+                            </div>
+                          </form>
+                        </div>
+                        
+                      </div>
+                    </div>
+                </div>
+
+                {% comment %} Remove Course {% endcomment %}
+                <div class="modal fade" id="deleteCourse-{{forloop.counter}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Remove Course</h5>
+                            <button type="button" class="btn-close" data-mdb-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{% url 'deleteCourse' dat.courseTitle dat.courseCode dat.section %}" method="POST" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <label for="date" class="col-form-label">Are you sure, you want to delete this course?</label>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-mdb-dismiss="modal">
+                                            Close
+                                        </button>
+                                        <input type="submit" name="submit" value="Save Changes" class="btn btn-primary">
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                
+                </h5>
+                  
+                  <p class="card-text">Course Code : {{dat.courseCode}} </p>
                   <p class="card-text">Semester : {{dat.semester}}</p>
                   <p class="card-text">Section : {{dat.section}}</p>
+                  {% comment %} <p class="card-text">Academic Year : {{dat.academicYear}}</p> {% endcomment %}
                   <a href="{% url 'facultyAttendance' %}?section={{dat.semester}}{{dat.section}}&courseTitle={{dat.courseTitle}}" class="btn btn-primary">Mark Attendance</a>
                   <a href="{% url 'studentList' %}?section={{dat.semester}}{{dat.section}}&courseTitle={{dat.courseTitle}}" class="btn btn-primary">View Attendance</a>
+                  
+                  
                 </div>
               </div>
             </div>

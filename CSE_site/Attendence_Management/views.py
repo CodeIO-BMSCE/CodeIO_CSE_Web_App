@@ -113,9 +113,10 @@ def facultyCourses(request):
         courseCode = request.POST['courseCode']
         semester = request.POST['semester']
         section = request.POST['section']
+        academicYear=request.POST['academicYear']
         current_user = request.user
         faculty = current_user.email
-        newcourse=FacultyCourse(courseTitle=courseTitle , courseCode=courseCode , semester=semester , section=section , faculty=faculty)
+        newcourse=FacultyCourse(courseTitle=courseTitle , courseCode=courseCode , semester=semester , section=section , faculty=faculty,academicYear=academicYear)
 
         if request.FILES.get('classfile'):
             student_resource = StudentResource()
@@ -145,6 +146,34 @@ def facultyCourses(request):
         entry.save()
         messages.success(request , 'Attendance Marked Successfully')
     return render(request , '../templates/Attendence_Management/facultyCourses.html',{'mydata':mydata})
+
+def updateCourse(request, course_code,section):
+    curr=request.user
+    mydata=FacultyCourse.objects.filter(faculty=curr.email)
+    courseinfo = FacultyCourse.objects.get(courseCode=course_code,faculty=curr.email,section=section)
+    courseinfo.courseTitle = request.POST['courseTitle']
+    courseinfo.courseCode = request.POST['courseCode']
+    courseinfo.semester = request.POST['semester']
+    courseinfo.section = request.POST['section']
+    current_user = request.user
+    courseinfo.faculty = current_user.email
+    courseinfo.save()
+    messages.success(request , 'Course details Updated Successfully')
+    return redirect(reverse('facultyCourses'))
+
+def deleteCourse(request,course_title, course_code,section):
+    curr=request.user
+    mydata=FacultyCourse.objects.filter(faculty=curr.email)
+    coursedel = FacultyCourse.objects.get(courseTitle=course_title, courseCode=course_code,faculty=curr.email,section=section)
+    coursedel.delete()
+    messages.success(request , 'Course Removed Successfully')
+    return redirect(reverse('facultyCourses'))
+
+def academicyear(request,academic_year):
+    curr=request.user
+    mydata=FacultyCourse.objects.filter(academicYear=academic_year,faculty=curr.email)
+    return redirect(reverse('facultyCourses'))
+
 
 def facultyAttendance(request):
     if request.method == 'POST' and  request.FILES.get('classfile'):
@@ -189,6 +218,8 @@ def studentList(request):
             return redirect(reverse('facultyCourses'))
         entry.append(usn)
         Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle).update(attendance=entry)
+        messages.info(request , f"Updated successfully")
+        return redirect(reverse('facultyCourses'))
     if request.method == 'POST' and action=='remove':
         date = request.POST['date']
         entry = Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle).values('attendance').first()['attendance'] if Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle).exists() else None
@@ -202,6 +233,8 @@ def studentList(request):
             return redirect(reverse('facultyCourses'))
         entry.remove(usn)
         Attendance.objects.filter(date=date , section=section , courseTitle=courseTitle).update(attendance=entry)
+        messages.info(request , f"Updated successfully")
+        return redirect(reverse('facultyCourses'))
     students = Student.objects.filter(section=section)
     entries = Attendance.objects.filter(section=section , courseTitle=courseTitle)
     totalClasses = entries.count()
