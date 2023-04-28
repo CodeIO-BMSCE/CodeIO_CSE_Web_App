@@ -12,10 +12,8 @@ from django.core.paginator import PageNotAnInteger, Paginator, EmptyPage
 
 
 class ThreadView(LoginRequiredMixin, ListView):  # defines the page that shows our threads, it does this by using ListView, which generates an iterable variable
-    # paginate_by = 5
     model = Thread
     template_name = "thread_list.html"
-    # paginate_by = 2
 
     
 

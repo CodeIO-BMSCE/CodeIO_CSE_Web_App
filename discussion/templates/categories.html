@@ -7,8 +7,8 @@
 
     {% if cat_threads %}
         {% for cat in cat_threads %}
-        <div class="card mr-3 my-3 bg-light">
-          <div class="card-header bg-light">
+        <div class="card mr-3 my-3">
+          <div class="card-header" style="background-color: white;">
             <span class="text-muted">Posted by 
               {% if cat.author.profile.pfp %}
               <img src="{{cat.author.profile.pfp.url}}" width=30 style="clip-path: circle(10px);">
@@ -21,7 +21,7 @@
             <h4><a href="{% url 'thread_detail' cat.pk %}" style="text-decoration: none;color: black;">{{ cat.title }}</a></h4>
           </div>
           <div class="card-body">
-            <div class="row m-0">
+            <div class="row m-0 mb-2">
             {{ cat.body }}
             </div>
             <div class="row">
@@ -47,7 +47,7 @@
                 <strong>{{ cat.liked.all.count }} likes, {{ cat.dislike.all.count }} dislikes</strong>
             </div>
           </div>
-            <div class="card-footer bg-light">
+            <div class="card-footer" style="background-color: white;">
                 <h4>Comments</h4><hr>
                 {% for comment in cat.comment_set.all %}
                 <p>            
@@ -114,7 +114,7 @@
           </nav>
         <hr><br><br>
     {% else %}
-    <h4>
+    <h4 class="text-center mt-5">
     No threads here yet...<br>
     <a href="{% url 'thread_new' %}">Please add one</a>!<h4>
     {% endif %}

@@ -20,7 +20,7 @@
     </div>
     <p class="card-body">
         {% if object.thread_image %}
-            <img src="{{ object.thread_image.url}}" width=100 height=100><br>
+            <img src="{{ object.thread_image.url}}" width=300 height=200><br>
         {% endif %}
         {{ object.body }}
     </p>
@@ -33,7 +33,7 @@
     {% csrf_token %}
     <input type="hidden" name="thread_id" value="{{ object.id }}">
     {% if user not in object.liked.all and user not in object.dislike.all %}
-        <button class="btn btn bg-success" type="submit">Like</button>
+        <button class="btn btn bg-primary" type="submit">Like</button>
     {% elif user in object.liked.all and user not in object.dislike.all  %}
         <button class="btn btn bg-danger" type="submit">Unlike</button>
     {% endif %}
@@ -82,7 +82,7 @@
     </form>
 </div>
 <p>
-    Do you want to go back to <a href="{% url 'category' object.category%}">{{object.category}}</a>
+    Do you want to go back to <a href="{% url 'category' object.category%}">{{object.category}}</a>?
 </p>
 </div>
 {% endblock content %}

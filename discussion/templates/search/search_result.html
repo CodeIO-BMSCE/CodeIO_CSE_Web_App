@@ -8,8 +8,8 @@
     </center>
     {% if cat_threads  %}
         {% for thread in cat_threads %}
-        <div class="card mr-3 mt-3 bg-light">
-            <div class="card-header bg-light">
+        <div class="card mr-3 mt-3">
+            <div class="card-header" style="background-color: white;">
                 <span class="text-muted">Posted by 
                     {% if thread.author.profile.pfp %}
                     <img src="{{thread.author.profile.pfp.url}}" width=30 style="clip-path: circle(10px);">
@@ -45,7 +45,7 @@
                 </form>
                 <strong>{{ thread.liked.all.count }} likes, {{ thread.dislike.all.count }} dislikes</strong>
             </div>
-            <div class="card-footer bg-light">
+            <div class="card-footer" style="background-color: white;">
                 <h4>Comments</h4><hr>
                 {% for comment in thread.comment_set.all %}
                 <p>            

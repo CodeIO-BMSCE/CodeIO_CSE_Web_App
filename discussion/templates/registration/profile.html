@@ -3,132 +3,154 @@
 {% block title %} {{current_user }}'s Profile{% endblock title%}
 
 {% block content%}
-<div>
-        {% if current_user.pfp %}
-            <img src="{{ current_user.pfp.url }}" width=40 height=40 class="rounded">
-        {% else %}
-            <img src="{% static 'threads/images/default_profile.jpg' %}" width=40 height=40 class="rounded">
-        {% endif %}
-
-    <div>
-        <p> 
-        <strong>Username: </strong>{{current_user.user.username }}<br>
-        <strong>Name: </strong>{{current_user.user.first_name }} 
-            {{current_user.user.last_name }}<br>
-        <strong> USN:</strong> {{current_user.user.USN }}<br>
-        </p>
-        
-        <h4>{{current_user.bio}} </h4>
-    </div>
-</div>
-{% if user.id == current_user.user.id %}
-
-<a href="{% url 'edit_profile_page' user.profile.id%}">Edit Profile</a>
-{% if threads_watched_by_you %}
-    <h4>Threads watched by you:</h4>
-    {% for thread in threads_watched_by_you %}
-    <div class="card">
-        <div class="card-header">
-            <span class="font-weight-bold"><a href="{% url 'thread_detail' thread.pk %}">{{ thread.title }}</a></span> &middot;
-            <span class="text-muted">by 
-                {% if thread.author.profile.pfp %}
-                <img src="{{thread.author.profile.pfp.url}}" width=20 height=20>
-                {% else %}
-                <img src="{% static 'threads/images/default_profile.jpg' %}" width=20 height=20 class="rounded">
-                {% endif %}
-                {{ thread.author }} | {{ thread.date}}</span>
-            <form action="{% url 'like_thread' %}" method = "POST" class="ui form">
-                {% csrf_token %}
-                <input type="hidden" name="thread_id" value="{{ thread.id }}">
-                {% if user not in thread.liked.all and user not in thread.dislike.all %}
-                    <button class="btn btn bg-success" type="submit">Like</button>
-                {% elif user in thread.liked.all and user not in thread.dislike.all  %}
-                    <button class="btn btn bg-danger" type="submit">Unlike</button>
-                {% endif %}
-            </form>
-            <form action="{% url 'dislike_thread' %}" method = "POST" class="ui form">
-                {% csrf_token %}
-                <input type="hidden" name="thread_id" value="{{ thread.id }}">
-                {% if user not in thread.dislike.all and user not in thread.liked.all  %}
-                    <button class="btn btn bg-danger" type="submit">DisLike</button>
-                {% elif user in thread.dislike.all%}
-                    <button class="btn btn bg-success" type="submit">Undo</button>
-                {% endif %}
-            </form>
-            <strong>{{ thread.liked.all.count }} likes, {{ thread.dislike.all.count }} dislikes</strong>
-        </div>
-        <div class="card-body">
-            {{ thread.body }}
-        </div>
-        <div class="card-footer">
-            <h4>Comments</h4><hr>
-            {% for comment in thread.comment_set.all %}
-            <p>            
-            <span class="font-weight-bold">{{ comment.author }}</span><br>
-            {{ comment }}<hr>
-            </p>
-            {% endfor %}
-        </div>
-    </div>
-    <br>
-    {% endfor %}
-    <br><br>
-{% endif %}
-<h4>Your threads:</h4>
-{% else %}
-<br><br>
-<h4>
-    <form action="{% url 'new_conversation' current_user.user.id %}" method="POST" class="ui form">
-        {% csrf_token %}
-        <button class="btn btn-success" type="Submit">Start a conversation with them!</button>
-    </form>
-</h4>
-<h4>Their threads:</h4>
-{% endif %}
-{% for thread in threads_by_them %}
-<div class="card">
-    <div class="card-header">
-        <span class="font-weight-bold"><a href="{% url 'thread_detail' thread.pk %}">{{ thread.title }}</a></span> &middot;
-        <span class="text-muted">by 
-            {% if thread.author.profile.pfp %}
-            <img src="{{thread.author.profile.pfp.url}}" width=20 height=20>
+<div class="row">
+    <div class="col-md-3 col-sm-12 text-center mt-5">
+        <div class="card my-3 text-center">
+            <div class="card-img">
+                {% if current_user.pfp %}
+                <img src="{{ current_user.pfp.url }}" width=150 style="clip-path: circle(70%);">
             {% else %}
-            <img src="{% static 'threads/images/default_profile.jpg' %}" width=20 height=20 class="rounded">
+                <img src="{% static 'threads/images/default_profile.jpg' %}" width=150 style="clip-path: circle(70%);">
             {% endif %}
-            {{ thread.author }} | {{ thread.date}}</span>
-        <form action="{% url 'like_thread' %}" method = "POST" class="ui form">
-            {% csrf_token %}
-            <input type="hidden" name="thread_id" value="{{ thread.id }}">
-            {% if user not in thread.liked.all and user not in thread.dislike.all %}
-                <button class="btn btn bg-success" type="submit">Like</button>
-            {% elif user in thread.liked.all and user not in thread.dislike.all  %}
-                <button class="btn btn bg-danger" type="submit">Unlike</button>
-            {% endif %}
-        </form>
-        <form action="{% url 'dislike_thread' %}" method = "POST" class="ui form">
-            {% csrf_token %}
-            <input type="hidden" name="thread_id" value="{{ thread.id }}">
-            {% if user not in thread.dislike.all and user not in thread.liked.all  %}
-                <button class="btn btn bg-danger" type="submit">DisLike</button>
-            {% elif user in thread.dislike.all%}
-                <button class="btn btn bg-success" type="submit">Undo</button>
-            {% endif %}
-        </form>
-        <strong>{{ thread.liked.all.count }} likes, {{ thread.dislike.all.count }} dislikes</strong>
+            </div>
+            <div class="card-body">
+                <p class="h5"> 
+                    <strong>Username: </strong>{{current_user.user.username }}<br>
+                    <strong>Name: </strong>{{current_user.user.first_name }} 
+                        {{current_user.user.last_name }}<br>
+                    <strong> USN:</strong> {{current_user.user.USN }}<br>
+                </p>
+            </div>
+        </div>
+        <div class="card my-4 text-center">
+            <div class="card-title">
+                <h3 class="mt-3">Bio</h3>
+            </div>
+            <div class="card-body">
+                <h4>{{current_user.bio}}</h4>
+            </div>
+        </div>
+        {% if user.id == current_user.user.id %}
+        <a href="{% url 'edit_profile_page' user.profile.id%}" class="btn btn-primary btn-pill" style="border-radius: 25px;">Edit Profile</a>
+        {% else %}
+        <h4>
+            <form action="{% url 'new_conversation' current_user.user.id %}" method="POST" class="ui form">
+                {% csrf_token %}
+                <button class="btn btn-primary btn-pill" type="Submit" style="border-radius: 25px;">Start a conversation!</button>
+            </form>
+        </h4>
+        {% endif %}
     </div>
-    <div class="card-body">
-        {{ thread.body }}
-    </div>
-    <div class="card-footer">
-        <h4>Comments</h4><hr>
-        {% for comment in thread.comment_set.all %}
-        <p>            
-          <span class="font-weight-bold">{{ comment.author }}</span><br>
-          {{ comment }}<hr>
-        </p>
+    <div class="col-md-9">
+        {% if user.id == current_user.user.id %}
+            {% if threads_watched_by_you %}
+                <h3 class="my-3">Threads watched by you:</h3>
+                {% for thread in threads_watched_by_you %}
+                <div class="card">
+                    <div class="card-header" style="background-color: white;">
+                        <span class="text-muted">Posted by 
+                        {% if cat.author.profile.pfp %}
+                        <img src="{{cat.author.profile.pfp.url}}" width=30 style="clip-path: circle(10px);">
+                        {% else %}
+                        <img src="{% static 'threads/images/default_profile.jpg' %}" width=30 style="clip-path: circle(10px);">
+                        {% endif %}
+                        {{ thread.author }} | {{ thread.date}}</span>
+                    </div>
+                    <div class="card-title m-3 mb-0">
+                        <h4><a href="{% url 'thread_detail' thread.pk %}" style="text-decoration: none;color: black;">{{ thread.title }}</a></h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="row m-0 mb-2">
+                            {{ thread.body }}
+                        </div>
+                        <form action="{% url 'like_thread' %}" method = "POST" class="ui form">
+                        {% csrf_token %}
+                            <input type="hidden" name="thread_id" value="{{ thread.id }}">
+                            {% if user not in thread.liked.all and user not in thread.dislike.all %}
+                            <button class="btn btn bg-primary" type="submit">Like</button>
+                            {% elif user in thread.liked.all and user not in thread.dislike.all  %}
+                            <button class="btn btn bg-danger" type="submit">Unlike</button>
+                            {% endif %}
+                        </form>
+                        <form action="{% url 'dislike_thread' %}" method = "POST" class="ui form">
+                        {% csrf_token %}
+                            <input type="hidden" name="thread_id" value="{{ thread.id }}">
+                            {% if user not in thread.dislike.all and user not in thread.liked.all  %}
+                            <button class="btn btn bg-danger" type="submit">DisLike</button>
+                            {% elif user in thread.dislike.all%}
+                            <button class="btn btn bg-success" type="submit">Undo</button>
+                            {% endif %}
+                        </form>
+                        <strong>{{ thread.liked.all.count }} likes, {{ thread.dislike.all.count }} dislikes</strong>
+                    </div>
+                    <div class="card-footer" style="background-color: white;">
+                        <h4>Comments</h4><hr>
+                        {% for comment in thread.comment_set.all %}
+                        <p>            
+                        <span class="font-weight-bold">{{ comment.author }}</span><br>
+                        {{ comment }}<hr>
+                        </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <br>
+                {% endfor %}
+            {% endif %}
+            <h3 class="my-3">Your Threads:</h3>
+        {% else %}
+            <h3 class="my-3">Their Threads:</h3>
+        {% endif %}
+        {% for thread in threads_by_them %}
+            <div class="card">
+                <div class="card-header" style="background-color: white;">
+                    <span class="text-muted">Posted by 
+                    {% if thread.author.profile.pfp %}
+                    <img src="{{thread.author.profile.pfp.url}}" width=30 style="clip-path: circle(10px);">
+                    {% else %}
+                    <img src="{% static 'threads/images/default_profile.jpg' %}" width=30 style="clip-path: circle(10px);">
+                    {% endif %}
+                    {{ thread.author }} | {{ thread.date}}</span>
+                </div>
+                <div class="card-title m-3 mb-0">
+                    <h4><a href="{% url 'thread_detail' thread.pk %}" style="text-decoration: none;color: black;">{{ thread.title }}</a></h4>
+                </div>
+                <div class="card-body">
+                    <div class="row m-0 mb-2">
+                        {{ thread.body }}
+                    </div>
+                    <form action="{% url 'like_thread' %}" method = "POST" class="ui form">
+                    {% csrf_token %}
+                        <input type="hidden" name="thread_id" value="{{ thread.id }}">
+                        {% if user not in thread.liked.all and user not in thread.dislike.all %}
+                        <button class="btn btn bg-primary" type="submit">Like</button>
+                        {% elif user in thread.liked.all and user not in thread.dislike.all  %}
+                        <button class="btn btn bg-danger" type="submit">Unlike</button>
+                        {% endif %}
+                    </form>
+                    <form action="{% url 'dislike_thread' %}" method = "POST" class="ui form">
+                        {% csrf_token %}
+                        <input type="hidden" name="thread_id" value="{{ thread.id }}">
+                        {% if user not in thread.dislike.all and user not in thread.liked.all  %}
+                        <button class="btn btn bg-danger" type="submit">DisLike</button>
+                        {% elif user in thread.dislike.all%}
+                        <button class="btn btn bg-success" type="submit">Undo</button>
+                        {% endif %}
+                    </form>
+                    <strong>{{ thread.liked.all.count }} likes, {{ thread.dislike.all.count }} dislikes</strong>
+                </div>
+                <div class="card-footer" style="background-color: white;">
+                    <h4>Comments</h4><hr>
+                    {% for comment in thread.comment_set.all %}
+                    <p>            
+                      <span class="font-weight-bold">{{ comment.author }}</span><br>
+                      {{ comment }}<hr>
+                    </p>
+                    {% endfor %}
+                </div>
+            </div>
+            <br>
         {% endfor %}
     </div>
 </div>
-<br>
-{% endfor %}
+
 {% endblock content %}
