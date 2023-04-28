@@ -1,0 +1,56 @@
+{% extends 'cie_allocator_base.html' %}
+{% load static %}
+
+{% block content %}
+
+<p class="fs-2 d-flex justify-content-center align-items-center p-1">Download Template</p>
+<form action="{% url 'exam_allocator_office_assign_students' %}" method="post">
+    {% csrf_token %}
+    <label for="semester" class="fs-3 d-flex justify-content-center align-items-center p-0">Choose a semester to assign room:</label>
+    <div class="fs-5 d-flex justify-content-center align-items-center p-1" >
+        <select name="semester">
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+        <option value="6">6</option>
+        <option value="7">7</option>
+        <option value="8">8</option>
+    </select>
+</div>
+    <br>
+    <div class="fs-3 d-flex justify-content-center align-items-center  p-1">
+    <button type="submit" class="rounded-5 btn btn-outline-primary" >Submit</button>
+</div>
+</form>
+
+{% if sem %}
+    {% for course_object in course_objects %}
+    <!-- TODO: change this to show course.short_code. code being the full code of the course -->
+        <a href="{% url 'exam_allocator_office_assign_students_download_template' course_object.code  %}"class="d-flex justify-content-around align-items-start">{{ course_object.code }}</a>
+    {% endfor %}
+{% endif %}
+
+<p class="fs-4 m-2 d-flex justify-content-center align-items-center p-3">Upload</p>
+<form action="{% url 'exam_allocator_office_assign_students_upload' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="fs-5 m-2 d-flex justify-content-center align-items-lg-center p-0" >
+    <label for="exam">Choose a exam:</label>
+    
+    <select name="exam">
+        <option value="CIE 1">CIE 1</option>
+        <option value="CIE 2">CIE 2</option>
+        <option value="CIE 3">CIE 3</option>
+    </select>
+</div>
+    <br>
+    <div class="fs-5 m-2 d-flex justify-content-center align-items-lg-center p-0" >
+    <input type="file" name="excel_file">
+    
+    <br>
+    <button type="submit">Send Email/Notification</button>
+    </div>
+</form>
+
+{% endblock content %}

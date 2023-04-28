@@ -20,7 +20,27 @@
                         href="{% url 'proctor_management' %}"
                         ><span>Proctor Management Portal</span></a
                     >
+            <div style="margin-left: 50%; width: 100%; height: 5%">
+                <button
+                    style="
+                        padding: 5%;
+                        margin-left: 10%;
+                        color: white;
+                        border: none;
+                        box-shadow: 2px 2px 17px -3px rgba(78, 95, 117, 1);
+                        background-color: #283d59;
+                        border-radius: 10px;
+                        margin-bottom: 2%;
+                    "
+                >
+                    <a
+                        style="text-decoration: none; color: white"
+                        href="{% url 'proctor_management' %}"
+                        ><span>Proctor Management Portal</span></a
+                    >
                 </button>
+            </div>
+        </div>
             </div>
         </div>
         <div class="col-md-4">
@@ -42,7 +62,27 @@
                         href="{% url 'attendence_management' %}"
                         ><span>Attendence Management Portal</span></a
                     >
+            <div style="margin-left: 20%; width: 100%; height: 5%">
+                <button
+                    style="
+                        padding: 5%;
+                        margin-left: 10%;
+                        color: white;
+                        border: none;
+                        box-shadow: 2px 2px 17px -3px rgba(124, 130, 133, 1);
+                        background-color: #232526;
+                        border-radius: 10px;
+                        margin-bottom: 2%;
+                    "
+                >
+                    <a
+                        style="text-decoration: none; color: white"
+                        href="{% url 'attendence_management' %}"
+                        ><span>Attendence Management Portal</span></a
+                    >
                 </button>
+            </div>
+        </div>
             </div>
         </div>
         <div class="col-md-4">
@@ -66,7 +106,11 @@
                     >
                 </button>
             </div>
+            </div>
         </div>
+    </div>
+    <br />
+    <div class="row" style="width: 100%">
     </div>
     <br />
     <div class="row" style="width: 100%">
@@ -95,31 +139,38 @@
                 </div>
             </center>
         </div>
-        <div class="col-md-4">
-            <center>
-                <div style="height: 5%">
-                    <button
-                        style="
-                            padding: 5%;
-                            margin-left: 10%;
-                            color: white;
-                            border: none;
-                            box-shadow: 2px 2px 17px -3px rgba(168, 67, 67, 1);
-                            background-color: #bf0404;
-                            border-radius: 10px;
-                            margin-bottom: 2%;
-                        "
-                    >
-                        <a
-                            style="text-decoration: none; color: white"
-                            href="{% url 'cie_allocator_student_view' %}"
-                            ><span>Exam Room Allocator</span></a
-                        >
-                    </button>
-                </div>
-            </center>
-        </div>
+
+        {% if is_user_office %}
+
+          <div class="col-md-4">
+              <center>
+                  <div style="height: 5%">
+                      <button
+                          style="
+                              padding: 5%;
+                              margin-left: 10%;
+                              color: white;
+                              border: none;
+                              box-shadow: 2px 2px 17px -3px rgba(168, 67, 67, 1);
+                              background-color: #bf0404;
+                              border-radius: 10px;
+                              margin-bottom: 2%;
+                          "
+                      >
+                          <a
+                              style="text-decoration: none; color: white"
+                              href="{% url 'exam_allocator' %}"
+                              ><span>Exam Room Allocator</span></a
+                          >
+                      </button>
+                  </div>
+              </center>
+          </div>
+
+        {% endif %}
+
         <div class="col-md-2"><a href="#"></a></div>
     </div>
 </div>
 {% endblock content %}
+
