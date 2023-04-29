@@ -73,6 +73,7 @@ def office_assign_students_upload(req):
             student = Student.objects.get(usn=row[0].value)
             email_body = f"Dear {student.name}, you have to assigned to room {row[1].value} for your {ws.title} test in {exam_title}"
             send_mail(email_subject, email_body, EMAIL_HOST_USER, [student.email])
+        return HttpResponse("Email has been sent")
 
 @allowed_users(["Office"])
 def office_assign_invigilators_view(req):
@@ -118,3 +119,4 @@ def office_assign_invigilators_upload(req):
             faculty = Faculty.objects.get(name=row[0].value)
             email_body = f"Dear {faculty.name}, you have to assigned to room {row[1].value} as invigilator on {date} at {time}"
             send_mail(email_subject, email_body, EMAIL_HOST_USER, [faculty.email])
+        return HttpResponse("Email has been sent")
